@@ -11,8 +11,8 @@ namespace Garage3.Models.Entities
     {
         public int ID { get; set; }
 
-        public int VehicleTypeID { get; set; }
-        public VehicleTypes VehicleType { get; set; }
+        public int ParkedVehickeID { get; set; }
+        public ParkedVehicle ParkedVehicle { get; set; }
 
         public int ParkingSpaceID { get; set; }
         public ParkingSpace ParkingSpace { get; set; }
