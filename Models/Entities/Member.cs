@@ -23,6 +23,7 @@ namespace Garage3.Models
         
         [Required, StringLength(30, ErrorMessage = "Do not enter more than 30 characters"), Display(Name = "Phone number")]
         public string PhoneNum { get; set; }
+        [Display(Name = "Full name")]
         public string FullName => $"{FirstName} {LastName}";
 
         [Required]
@@ -34,8 +35,5 @@ namespace Garage3.Models
         [System.ComponentModel.DataAnnotations.Compare("Password")]
         public string ConfirmPassword { get; set; }
 
-
-        //Navigation property
-        //public Adress Adress { get; set; }
     }
 }
