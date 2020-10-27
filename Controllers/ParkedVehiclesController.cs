@@ -37,6 +37,7 @@ namespace Garage3.Controllers
             var parkedVehicle = await _context.ParkedVehicle
                 .Include(p => p.Member)
                 .Include(p => p.VehicleType)
+                .Include(p => p.Parking)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (parkedVehicle == null)
             {
