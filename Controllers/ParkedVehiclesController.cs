@@ -107,6 +107,31 @@ namespace Garage3.Controllers
             return View(detailsView);
         }
 
+
+        //Soile
+        public async Task<IActionResult> OverView()
+        {
+            var vehicles = await _context.ParkedVehicle.ToListAsync();
+            var model = new List<OverViewViewModel>();
+
+
+            foreach (var vehicle in vehicles)
+            {
+                var arrival = vehicle.ArrivalTime;
+                var nowTime = DateTime.Now;
+
+                model.Add(new OverViewViewModel
+                {
+                    VehicleType = vehicle.VehicleType,
+                    RegNum = vehicle.RegNum,
+                    ArrivalTime = arrival,
+                    Period = nowTime - arrival
+                });
+            }
+
+            return View(model);
+        }
+
         // GET: ParkedVehicles/Create
         public IActionResult Create()
         {
