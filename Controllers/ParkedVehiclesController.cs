@@ -187,6 +187,8 @@ namespace Garage3.Controllers
             return View(parkedVehicle);
         }
 
+        // Torbjörn
+
         // GET: ParkedVehicles/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -207,15 +209,25 @@ namespace Garage3.Controllers
             return View(parkedVehicle);
         }
 
+        // Torbjörn
+
         // POST: ParkedVehicles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var parkedVehicle = await _context.ParkedVehicle.FindAsync(id);
-            _context.ParkedVehicle.Remove(parkedVehicle);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var parkedVehicle = await _context.ParkedVehicle
+                .Include(p => p.Parking)
+                .ThenInclude(p => p.ParkingSpace)
+                .FirstOrDefaultAsync(m => m.ID == id);
+
+             parkedVehicle.Parking.Select(s => s.ParkingSpace)
+                .ToList()
+                .ForEach(p => p.Available = true);         
+
+           _context.ParkedVehicle.Remove(parkedVehicle);
+           await _context.SaveChangesAsync();
+           return RedirectToAction(nameof(Index));
         }
 
         private bool ParkedVehicleExists(int id)
