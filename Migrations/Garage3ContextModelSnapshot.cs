@@ -26,17 +26,17 @@ namespace Garage3.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ParkingSpaceID")
+                    b.Property<int>("ParkedVehicleID")
                         .HasColumnType("int");
 
-                    b.Property<int>("VehicleTypeID")
+                    b.Property<int>("ParkingSpaceID")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ParkingSpaceID");
+                    b.HasIndex("ParkedVehicleID");
 
-                    b.HasIndex("VehicleTypeID");
+                    b.HasIndex("ParkingSpaceID");
 
                     b.ToTable("Parking");
 
@@ -44,8 +44,8 @@ namespace Garage3.Migrations
                         new
                         {
                             ID = 1,
-                            ParkingSpaceID = 1,
-                            VehicleTypeID = 1
+                            ParkedVehicleID = 1,
+                            ParkingSpaceID = 1
                         });
                 });
 
@@ -287,15 +287,15 @@ namespace Garage3.Migrations
 
             modelBuilder.Entity("Garage3.Models.Entities.Parking", b =>
                 {
-                    b.HasOne("Garage3.Models.Entities.ParkingSpace", "ParkingSpace")
+                    b.HasOne("Garage3.Models.ParkedVehicle", "ParkedVehicle")
                         .WithMany()
-                        .HasForeignKey("ParkingSpaceID")
+                        .HasForeignKey("ParkedVehicleID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Garage3.Models.VehicleTypes", "VehicleType")
+                    b.HasOne("Garage3.Models.Entities.ParkingSpace", "ParkingSpace")
                         .WithMany()
-                        .HasForeignKey("VehicleTypeID")
+                        .HasForeignKey("ParkingSpaceID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
