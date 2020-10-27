@@ -5,6 +5,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\Images\addCarBW.png" />
+    <None Include="wwwroot\Images\collectCar.png" />
+    <None Include="wwwroot\Images\garage.png" />
+    <None Include="wwwroot\Images\login.png" />
+    <None Include="wwwroot\Images\parkCar.png" />
+    <None Include="wwwroot\Images\parkedCars.png" />
+    <None Include="wwwroot\Images\parkingReceipt.png" />
+    <None Include="wwwroot\Images\register.png" />
+    <None Include="wwwroot\Images\search.png" />
+    <None Include="wwwroot\Images\searchMember.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.9" />
