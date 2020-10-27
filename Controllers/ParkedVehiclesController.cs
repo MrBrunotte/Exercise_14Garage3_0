@@ -21,10 +21,50 @@ namespace Garage3.Controllers
         }
 
         // GET: ParkedVehicles
+        // Added by Stefan search functionality
         public async Task<IActionResult> Index()
         {
-            var garage3Context = _context.ParkedVehicle.Include(p => p.Member).Include(p => p.VehicleType);
-            return View(await garage3Context.ToListAsync());
+            var vehicles = await _context.ParkedVehicle.ToListAsync();
+
+            var model = new VehicleTypeViewModel
+            {
+                VehicleList = vehicles,
+                VehicleTypes = await TypeAsync()
+            };
+            return View(model);
+        }
+
+        private async Task<IEnumerable<SelectListItem>> TypeAsync()
+        {
+            return await _context.ParkedVehicle
+                         .Select(m => m.VehicleType)
+                         // Only distinct type, no multiples
+                         .Distinct()
+                         .Select(m => new SelectListItem
+                         {
+                             Text = m.ToString(),
+                             Value = m.ToString()
+                         })
+                         .ToListAsync();
+        }
+
+        public async Task<IActionResult> Filter(VehicleTypeViewModel viewModel)
+        {
+            var vehicles = string.IsNullOrWhiteSpace(viewModel.SearchString) ?
+                _context.ParkedVehicle :
+                _context.ParkedVehicle.Where(m => m.RegNum.Contains(viewModel.SearchString));
+
+            vehicles = viewModel.VehicleType == null ?
+                vehicles :
+                vehicles.Where(m => m.VehicleType == viewModel.VehicleTypes);
+
+            var model = new VehicleTypeViewModel
+            {
+                VehicleList = await vehicles.ToListAsync(),
+                VehicleTypes = await TypeAsync()
+            };
+
+            return View(nameof(Index), model);
         }
 
         // Torbjörn
@@ -75,7 +115,7 @@ namespace Garage3.Controllers
         }
 
         // POST: ParkedVehicles/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -111,7 +151,7 @@ namespace Garage3.Controllers
         }
 
         // POST: ParkedVehicles/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]

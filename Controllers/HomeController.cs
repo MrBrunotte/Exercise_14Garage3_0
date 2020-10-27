@@ -17,10 +17,10 @@ namespace Garage3.Controllers
         {
             _logger = logger;
         }
-
+        // Stefan Landingpage path
         public IActionResult Index()
         {
-            return View();
+            return View("../../MyViews/LandingPage/LandingPage");
         }
 
         public IActionResult Privacy()
