@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Garage3.Data;
+using Garage3.Services;
 
 namespace Garage3
 {
@@ -26,6 +27,8 @@ namespace Garage3
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddScoped<ISelectService, TypeSelectService>();
 
             services.AddDbContext<Garage3Context>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("Garage3Context")));
