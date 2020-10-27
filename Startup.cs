@@ -27,7 +27,7 @@ namespace Garage3
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-
+            // Added by Stefan
             services.AddScoped<ISelectService, TypeSelectService>();
 
             services.AddDbContext<Garage3Context>(options =>
@@ -56,9 +56,10 @@ namespace Garage3
 
             app.UseEndpoints(endpoints =>
             {
+                // Changed to Home by Stefan
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=ParkedVehicles}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

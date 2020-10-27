@@ -48,24 +48,24 @@ namespace Garage3.Controllers
                          .ToListAsync();
         }
 
-        //public async Task<IActionResult> Filter(VehicleTypeViewModel viewModel)
-        //{
-        //    var vehicles = string.IsNullOrWhiteSpace(viewModel.SearchString) ?
-        //        _context.ParkedVehicle :
-        //        _context.ParkedVehicle.Where(m => m.RegNum.Contains(viewModel.SearchString));
+        public async Task<IActionResult> Filter(VehicleTypeViewModel viewModel)
+        {
+            var vehicles = string.IsNullOrWhiteSpace(viewModel.SearchString) ?
+                _context.ParkedVehicle :
+                _context.ParkedVehicle.Where(m => m.RegNum.Contains(viewModel.SearchString));
 
-        //    vehicles = viewModel.VehicleType == null ?
-        //        vehicles :
-        //        vehicles.Where(m => m.VehicleType == viewModel.VehicleType);
+            vehicles = viewModel.VehicleType == null ?
+                vehicles :
+                vehicles.Where(m => m.VehicleType == viewModel.VehicleType);
 
-        //    var model = new VehicleTypeViewModel
-        //    {
-        //        VehicleList = await vehicles.ToListAsync(),
-        //        VehicleTypes = await TypeAsync()
-        //    };
+            var model = new VehicleTypeViewModel
+            {
+                VehicleList = await vehicles.ToListAsync(),
+                VehicleTypes = await TypeAsync()
+            };
 
-        //    return View(nameof(Index), model);
-        //}
+            return View(nameof(Index), model);
+        }
 
         // GET: ParkedVehicles/Details/5
         public async Task<IActionResult> Details(int? id)
