@@ -1,15 +1,36 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
+@import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+
+/*font-family: 'Roboto', sans-serif;*/
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
 
 a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
 }
 
 /* Provide sufficient contrast against white background */
 a {
-  color: #0366d6;
+    color: #fd4209;
+    padding: 5px 10px;
+    letter-spacing: 1px;
+}
+
+a:hover {
+    color: #242424;
+    text-decoration: none;
 }
 
 .btn-primary {
@@ -24,11 +45,40 @@ a {
   border-color: #1861ac;
 }
 
+.parkVehicle {
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: #e0a800;
+    color: white;
+}
+
+/* Home page */
+.textCenter {
+    text-align: center;
+}
+.bodyColor {
+    background-color: #9f9a8f;
+}
+.pHome {
+    margin-bottom: 35px;
+}
+.h1Home {
+    font-size: 4.5rem;
+    color: black;
+    font-weight: 900;
+    margin: 3rem 0 1rem;
+}
+.h2Home {
+    font-size: 2.5rem;
+    padding: 2rem 0;
+}
+.mySpan {
+    font-weight: 900;
+    letter-spacing: 2px;
+}
 /* Sticky footer styles
 -------------------------------------------------- */
-html {
-  font-size: 14px;
-}
+
 @media (min-width: 768px) {
   html {
     font-size: 16px;
@@ -54,18 +104,31 @@ button.accept-policy {
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
+    font-family: Roboto;
+    font-size: 14px;
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    font-family: 'Roboto', sans-serif;
+    overflow-x: hidden; /* Hide horizontal scrollbar */
 }
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 30px; /* Vertically center the text there */
+    text-align: center;
+    font-size: .8rem;
+    background-color: #d7d7d7;
 }
+.centerItemVertical {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+

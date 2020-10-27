@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Garage 3</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,900;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body class="bodyColor">
+    <div class="container textCenter">
+        <h1 class="h1Home">Welcome to Garage 3</h1>
+        <h3 class="h2Home">The Garage goes ASP.NET MVC!</h3>
+        <h4 class="pHome">This version is a single model MVC project - ParkedVehicle</h4>
+        <p>
+            There are three main functions: <br /> <span class="mySpan">
+                "Park Your Vehicle", "Vehicle Overview" and "Parked Cars"
+            </span>
+        </p>
+        <hr /><br />
+        <p>When you park your vehicle you add all attributes of the vehicle and when submitting the information you will get a receipt.</p>
+        <p class="pHome">
+            <a class="parkVehicle" href="../ParkedVehicles/CheckInVehicle">Park Your Vehicle</a>
+        </p>
+        <p>In the Vehicle Overview section you can see a partial view of all parked vehicles.</p>
+        <p class="pHome">
+            <a class="parkVehicle" href="../ParkedVehicles/OverView">Vehicle OverView</a>
+        </p>
+        <p>
+            In the Parked Cars view you will also see all parked vehicles with all attributes showing.
+            <br />You can also <span class="mySpan">"CheckOut", "Edit"</span> and see
+            <span class="mySpan">"Details"</span> of the vehicle.
+        </p>
+        <p class="pHome">
+            <a class="parkVehicle" href="../ParkedVehicles">Parked Cars</a>
+        </p>
+    </div>
+    <footer class="border-top footer text-muted centerItemVertical footerBg">
+        <div class="container">
+            Garage 3 - Grupp 2 || Webmasters Soile, Torbjörn och Stefan &#169; 2020
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>
