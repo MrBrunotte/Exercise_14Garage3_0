@@ -35,7 +35,7 @@ namespace Garage3.Models.ViewModels
         [DisplayFormat(DataFormatString = "{0:%d}d {0:%h}h {0:%m}m")]
         public TimeSpan Period { get; set; }
         
-        [Display(Name = "Parking Spaces")]
+        [Display(Name = "Parking Space(s)")]
         public ICollection<ParkingSpace> ParkingSpaces { get; set; }
     }
 }
