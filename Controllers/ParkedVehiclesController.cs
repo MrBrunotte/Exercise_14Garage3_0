@@ -56,7 +56,7 @@ namespace Garage3.Controllers
 
             vehicles = viewModel.VehicleType == null ?
                 vehicles :
-                vehicles.Where(m => m.VehicleType == viewModel.VehicleType);
+                vehicles.Where(m => m.VehicleType == viewModel.VehicleTypes);
 
             var model = new VehicleTypeViewModel
             {
