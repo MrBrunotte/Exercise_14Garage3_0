@@ -26,10 +26,7 @@ namespace Garage3.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ParkedVehickeID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ParkedVehicleID")
+                    b.Property<int>("ParkedVehicleID")
                         .HasColumnType("int");
 
                     b.Property<int>("ParkingSpaceID")
@@ -47,7 +44,7 @@ namespace Garage3.Migrations
                         new
                         {
                             ID = 1,
-                            ParkedVehickeID = 1,
+                            ParkedVehicleID = 1,
                             ParkingSpaceID = 1
                         });
                 });
@@ -292,7 +289,9 @@ namespace Garage3.Migrations
                 {
                     b.HasOne("Garage3.Models.ParkedVehicle", "ParkedVehicle")
                         .WithMany()
-                        .HasForeignKey("ParkedVehicleID");
+                        .HasForeignKey("ParkedVehicleID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Garage3.Models.Entities.ParkingSpace", "ParkingSpace")
                         .WithMany()

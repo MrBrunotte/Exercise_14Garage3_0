@@ -90,8 +90,7 @@ namespace Garage3.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ParkedVehickeID = table.Column<int>(nullable: false),
-                    ParkedVehicleID = table.Column<int>(nullable: true),
+                    ParkedVehicleID = table.Column<int>(nullable: false),
                     ParkingSpaceID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -102,7 +101,7 @@ namespace Garage3.Migrations
                         column: x => x.ParkedVehicleID,
                         principalTable: "ParkedVehicle",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Parking_ParkingSpace_ParkingSpaceID",
                         column: x => x.ParkingSpaceID,
@@ -145,17 +144,22 @@ namespace Garage3.Migrations
             migrationBuilder.InsertData(
                 table: "ParkedVehicle",
                 columns: new[] { "ID", "ArrivalTime", "Color", "Make", "MemberID", "Model", "RegNum", "VehicleTypeID" },
-                values: new object[,]
-                {
-                    { 1, new DateTime(2020, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "Black", "Dodge", 1, "Nitro TR 4/4", "FZK678", 3 },
-                    { 2, new DateTime(2020, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "Black", "Camaro", 3, "SS", "FZK677", 3 },
-                    { 3, new DateTime(2020, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "Orange", "Harley Davidson", 2, "NightRod", "MKT677", 4 }
-                });
+                values: new object[] { 1, new DateTime(2020, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "Black", "Dodge", 1, "Nitro TR 4/4", "FZK678", 3 });
+
+            migrationBuilder.InsertData(
+                table: "ParkedVehicle",
+                columns: new[] { "ID", "ArrivalTime", "Color", "Make", "MemberID", "Model", "RegNum", "VehicleTypeID" },
+                values: new object[] { 2, new DateTime(2020, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "Black", "Camaro", 3, "SS", "FZK677", 3 });
+
+            migrationBuilder.InsertData(
+                table: "ParkedVehicle",
+                columns: new[] { "ID", "ArrivalTime", "Color", "Make", "MemberID", "Model", "RegNum", "VehicleTypeID" },
+                values: new object[] { 3, new DateTime(2020, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "Orange", "Harley Davidson", 2, "NightRod", "MKT677", 4 });
 
             migrationBuilder.InsertData(
                 table: "Parking",
-                columns: new[] { "ID", "ParkedVehickeID", "ParkedVehicleID", "ParkingSpaceID" },
-                values: new object[] { 1, 1, null, 1 });
+                columns: new[] { "ID", "ParkedVehicleID", "ParkingSpaceID" },
+                values: new object[] { 1, 1, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ParkedVehicle_MemberID",

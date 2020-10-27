@@ -160,7 +160,7 @@ namespace Garage3.Data
                new Parking
                {
                    ID = 1,
-                   ParkedVehickeID = 1,
+                   ParkedVehicleID = 1,
                    ParkingSpaceID = 1
 
                }
