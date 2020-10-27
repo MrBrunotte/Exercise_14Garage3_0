@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Garage3.Data;
 using Garage3.Models;
+using Garage3.Models.ViewModels;
 
 namespace Garage3.Controllers
 {
@@ -26,6 +27,8 @@ namespace Garage3.Controllers
             return View(await garage3Context.ToListAsync());
         }
 
+        // Torbjörn
+
         // GET: ParkedVehicles/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -38,13 +41,29 @@ namespace Garage3.Controllers
                 .Include(p => p.Member)
                 .Include(p => p.VehicleType)
                 .Include(p => p.Parking)
+                  .ThenInclude(p => p.ParkingSpace)
                 .FirstOrDefaultAsync(m => m.ID == id);
+
             if (parkedVehicle == null)
             {
                 return NotFound();
             }
 
-            return View(parkedVehicle);
+            var detailsView = new ParkedVehicleDetailsViewModel
+            {
+                VehicleType = parkedVehicle.VehicleType,
+                Member = parkedVehicle.Member,
+                RegNum = parkedVehicle.RegNum,
+                Color = parkedVehicle.Color,
+                Make = parkedVehicle.Make,
+                Model = parkedVehicle.Model,
+                ArrivalTime = parkedVehicle.ArrivalTime,
+                Period = DateTime.Now - parkedVehicle.ArrivalTime,
+                ParkingSpaces = parkedVehicle.Parking.Select(s => s.ParkingSpace).ToList()
+
+            };
+
+            return View(detailsView);
         }
 
         // GET: ParkedVehicles/Create
