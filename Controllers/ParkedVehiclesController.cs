@@ -30,6 +30,7 @@ namespace Garage3.Controllers
             var model = new VehicleTypeViewModel
             {
                 VehicleList = vehicles,
+                // for the vehicle type:
                 VehicleTypes = await TypeAsync()
             };
             return View(model);
@@ -55,7 +56,7 @@ namespace Garage3.Controllers
                 _context.ParkedVehicle :
                 _context.ParkedVehicle.Where(m => m.RegNum.Contains(viewModel.SearchString));
 
-            vehicles = viewModel.VehicleTypes == null ?
+            vehicles = viewModel.VehicleType == null ?
                 vehicles :
                 vehicles.Where(m => m.VehicleType == viewModel.VehicleTypes);
 
@@ -90,6 +91,8 @@ namespace Garage3.Controllers
                 return NotFound();
             }
 
+            //var x = parkedVehicle.VehicleType.VehicleType
+
             var detailsView = new ParkedVehicleDetailsViewModel
             {
                 VehicleType = parkedVehicle.VehicleType,
@@ -111,7 +114,7 @@ namespace Garage3.Controllers
         //Soile
         public async Task<IActionResult> OverView()
         {
-            
+
             var vehicles = await _context.ParkedVehicle.ToListAsync();
 
             var model = new List<OverViewViewModel>();
