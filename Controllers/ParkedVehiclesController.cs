@@ -14,6 +14,8 @@ namespace Garage3.Controllers
 {
     public class ParkedVehiclesController : Controller
     {
+        private const double costPerMinute = 0.2;
+
         private readonly Garage3Context _context;
 
         public ParkedVehiclesController(Garage3Context context)
@@ -32,6 +34,7 @@ namespace Garage3.Controllers
                 VehicleList = vehicles,
                 VehicleTypes = await TypeAsync()
             };
+            ViewData["VehicleTypeID"] = new SelectList(_context.Set<VehicleTypes>(), "ID", "VehicleType");
             return View(model);
         }
 
@@ -89,6 +92,8 @@ namespace Garage3.Controllers
             {
                 return NotFound();
             }
+
+            //var x = parkedVehicle.VehicleType.VehicleType
 
             var detailsView = new ParkedVehicleDetailsViewModel
             {
@@ -307,8 +312,10 @@ namespace Garage3.Controllers
             return View(parkedVehicle);
         }
 
-        // GET: ParkedVehicles/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // Torbjörn
+
+        // GET: ParkedVehicles/Checkout/5
+        public async Task<IActionResult> Checkout(int? id)
         {
             if (id == null)
             {
@@ -324,18 +331,69 @@ namespace Garage3.Controllers
                 return NotFound();
             }
 
-            return View(parkedVehicle);
+            var arrival = parkedVehicle.ArrivalTime;
+            var checkout = DateTime.Now;
+
+            var checkoutView = new ParkedVehicleCheckoutViewModel
+            {              
+                Member = parkedVehicle.Member,
+                RegNum = parkedVehicle.RegNum,
+                ArrivalTime = arrival,
+                CheckOutTime = checkout,
+                Period = checkout - arrival,
+                CostPerMinute = costPerMinute,
+                Cost = Math.Round((checkout - arrival).TotalMinutes * costPerMinute, 2)
+            };
+
+            return View(checkoutView);
         }
 
-        // POST: ParkedVehicles/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // Torbjörn
+        // ParkedVehicle is deleted and Available is set to True in the ParkingSpace(s) that was used
+
+        // POST: ParkedVehicles/Checkout/5
+        [HttpPost, ActionName("Checkout")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> CheckoutConfirmed(int id)
         {
-            var parkedVehicle = await _context.ParkedVehicle.FindAsync(id);
-            _context.ParkedVehicle.Remove(parkedVehicle);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var parkedVehicle = await _context.ParkedVehicle
+                .Include(p => p.Member)
+                .Include(p => p.Parking)
+                .ThenInclude(p => p.ParkingSpace)
+                .FirstOrDefaultAsync(m => m.ID == id);
+
+            // To be used in Receipt         
+            TempData["regnum"] = parkedVehicle.RegNum;
+            TempData["arrival"] = parkedVehicle.ArrivalTime;
+            TempData["checkout"] = DateTime.Now;
+            TempData["membername"] = parkedVehicle.Member.FullName;
+
+            // Update ParkingSpace (set Available = True)
+            parkedVehicle.Parking.Select(s => s.ParkingSpace)
+                .ToList()
+                .ForEach(p => p.Available = true);         
+
+           _context.ParkedVehicle.Remove(parkedVehicle);
+           await _context.SaveChangesAsync();
+           return RedirectToAction(nameof(Receipt));
+        }
+
+        public IActionResult Receipt()
+        {
+            var arrival = (DateTime)TempData["arrival"];
+            var checkout = (DateTime)TempData["checkout"];
+
+            var receipt = new ParkedVehicleReceiptViewModel
+            {
+                RegNum = (string)TempData["regnum"],
+                MemberName = (string)TempData["membername"],
+                ArrivalTime = arrival,
+                CheckOutTime = checkout,
+                Period = checkout - arrival,
+                Cost = Math.Round((checkout - arrival).TotalMinutes * costPerMinute, 2)
+            };
+
+            return View(receipt);
         }
 
         private bool ParkedVehicleExists(int id)
