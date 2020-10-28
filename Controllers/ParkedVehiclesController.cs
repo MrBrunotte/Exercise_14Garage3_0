@@ -54,7 +54,7 @@ namespace Garage3.Controllers
                 _context.ParkedVehicle :
                 _context.ParkedVehicle.Where(m => m.RegNum.Contains(viewModel.SearchString));
 
-            vehicles = viewModel.VehicleType == null ?
+            vehicles = viewModel.VehicleTypes == null ?
                 vehicles :
                 vehicles.Where(m => m.VehicleType == viewModel.VehicleTypes);
 
