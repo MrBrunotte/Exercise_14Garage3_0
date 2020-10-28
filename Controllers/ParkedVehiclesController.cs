@@ -234,17 +234,47 @@ namespace Garage3.Controllers
         public async Task<IActionResult> CheckoutConfirmed(int id)
         {
             var parkedVehicle = await _context.ParkedVehicle
+                .Include(p => p.Member)
                 .Include(p => p.Parking)
                 .ThenInclude(p => p.ParkingSpace)
                 .FirstOrDefaultAsync(m => m.ID == id);
 
-             parkedVehicle.Parking.Select(s => s.ParkingSpace)
+            // Save for use in receipt
+            var regnum = parkedVehicle.RegNum;
+            var arrival = parkedVehicle.ArrivalTime;
+            var checkout = DateTime.Now;
+
+            TempData["regnum"] = parkedVehicle.RegNum;
+            TempData["arrival"] = parkedVehicle.ArrivalTime;
+            TempData["checkout"] = DateTime.Now;
+            TempData["membername"] = parkedVehicle.Member.FullName;
+
+            // Update ParkingSpace (set Available = True)
+            parkedVehicle.Parking.Select(s => s.ParkingSpace)
                 .ToList()
                 .ForEach(p => p.Available = true);         
 
            _context.ParkedVehicle.Remove(parkedVehicle);
            await _context.SaveChangesAsync();
-           return RedirectToAction(nameof(Index));
+           return RedirectToAction(nameof(Receipt));
+        }
+
+        public IActionResult Receipt()
+        {
+            var arrival = (DateTime)TempData["arrival"];
+            var checkout = (DateTime)TempData["checkout"];
+
+            var receipt = new ParkedVehicleReceiptViewModel
+            {
+                RegNum = (string)TempData["regnum"],
+                MemberName = (string)TempData["membername"],
+                ArrivalTime = arrival,
+                CheckOutTime = checkout,
+                Period = checkout - arrival,
+                Cost = Math.Round((checkout - arrival).TotalMinutes * costPerMinute, 2)
+            };
+
+            return View(receipt);
         }
 
         private bool ParkedVehicleExists(int id)

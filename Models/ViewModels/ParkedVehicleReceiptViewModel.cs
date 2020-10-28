@@ -11,6 +11,8 @@ namespace Garage3.Models.ViewModels
         public int ID { get; set; }
         [Display(Name = "Registration number")]
         public string RegNum { get; set; }
+        [Display(Name = "Member")]
+        public string MemberName { get; set; }
         [Display(Name = "Time of Arrival")]
         public DateTime ArrivalTime { get; set; }
         [Display(Name = "Time of Checkout")]
