@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Garage3.Models.ViewModels.OverViewViewModel>
+
+@{
+    ViewData["Title"] = "OverView";
+}
+
+<h1>OverView</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.VehicleType.VehicleType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RegNum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArrivalTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Period)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.VehicleType.VehicleType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RegNum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArrivalTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Period)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

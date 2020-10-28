@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Garage3.Models.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,11 +12,17 @@ namespace Garage3.Models
         public int ID { get; set; }
 
         public int VehicleTypeID { get; set; }
+
+        // Navigation property
         public VehicleTypes VehicleType { get; set; }
 
         public int MemberID { get; set; }
+
+        // Navigation property
         public Member Member { get; set; }
 
+        // Navigation property
+        public ICollection<Parking> Parking { get; set; }
 
         [Required, StringLength(8, ErrorMessage = "Registration number can only be 8 characters long"), Display(Name = "Registration number")]
         public string RegNum { get; set; }
