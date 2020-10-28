@@ -6,12 +6,11 @@
 }
 
 <h1>Parked Vehicles</h1>
-
-@*<form asp-action="Filter">
+<form asp-action="Filter">
     <div class="input-group mb-3">
         <input type="text" class="form-control" name="SearchString" placeholder="Search Registration Number..." />
         <div class="input-group-append ml-1">
-            <select asp-for="VehicleType.VehicleType" asp-items="ViewBag.VehicleTypeID" class="form-control ml-1">
+            <select asp-for="VehicleType.VehicleType" asp-items="@await service.GetTypeAsync()" class="form-control ml-1">
                 <option selected="selected" value="">Choose Vehicle Type...</option>
             </select>
         </div>

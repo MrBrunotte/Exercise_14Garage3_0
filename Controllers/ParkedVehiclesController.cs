@@ -118,10 +118,13 @@ namespace Garage3.Controllers
         {
             
             var vehicles = await _context.ParkedVehicle.Include(p => p.VehicleType).ToListAsync();
+            if (vehicles == null)
+            {
+                return NotFound();
+            }
 
             var model = new List<OverViewViewModel>();
             
-
             foreach (var vehicle in vehicles)
             {
 
@@ -142,42 +145,47 @@ namespace Garage3.Controllers
 
 
         //Soile
-        // GET: ParkedVehicles/CheckInVehicle
         public IActionResult CheckInVehicle()
         {
-            //var model = new List<CheckInVehicleViewModel>();
-            //ToDo -  set member - as already logged in -  no selectlist
-           // ViewData["MemberID"] = new SelectList(_context.Set<Member>(), "Id", "FullName");
-            ViewData["VehicleTypeID"] = new SelectList(_context.Set<VehicleTypes>(), "ID", "VehicleType");
-
             return View();
         }
 
         //Soile
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CheckInVehicle([Bind("ID,VehicleType,Member,RegNum,Color,Make,Model")] ParkedVehicle parkedVehicle)
+        public async Task<IActionResult> CheckInVehicle( CheckInVehicleViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
+                var vehicles = new ParkedVehicle
+                {
+                    MemberID = viewModel.MemberID,
+                    VehicleTypeID = viewModel.VehicleTypeID,
+                    RegNum = viewModel.RegNum,
+                    Color = viewModel.Color,
+                    Make = viewModel.Make,
+                    Model = viewModel.Model
+                };
+
                 try
                 {
-                    if (!RegNumExists(parkedVehicle.RegNum))
+                    if (!RegNumExists(viewModel.RegNum))
                     {
-                        parkedVehicle.ArrivalTime = DateTime.Now;
-                        _context.Add(parkedVehicle);
+                        vehicles.ArrivalTime = DateTime.Now;
+                       
+                        _context.Add(vehicles);
                         await _context.SaveChangesAsync();
                     }
                     else
                     {
-                        ModelState.AddModelError("RegNum", $"{parkedVehicle.RegNum} Already parked.");
+                        ModelState.AddModelError("RegNum", $"{viewModel.RegNum} Already parked.");
                         return View();
                     }
                 }
                 catch (DBConcurrencyException)
                 {
                     //ToDo
-                    if (RegNumExists(parkedVehicle.RegNum))
+                    if (RegNumExists(viewModel.RegNum))
                     {
                         return RedirectToAction(nameof(Index));
                         //return RedirectToAction(nameof(Feedback), new { RegNum = parkedVehicle.RegNum, Message = "The Registraion number exist, Some error occured" });
@@ -190,7 +198,8 @@ namespace Garage3.Controllers
                 //return RedirectToAction(nameof(Feedback), new { RegNum = parkedVehicle.RegNum, Message = "Has been checked in" });
                  return RedirectToAction(nameof(Index));
             }
-            return View(parkedVehicle);
+           
+            return View(viewModel);
         }
        
 
@@ -404,6 +413,10 @@ namespace Garage3.Controllers
         private bool RegNumExists(string regNum)
         {
             return _context.ParkedVehicle.Any(e => e.RegNum == regNum);
+        }
+        private bool VehicleTypeExists(string vType)
+        {
+            return _context.ParkedVehicle.Any(e => e.VehicleType.VehicleType == vType);
         }
 
         private bool MemberExists(int memberId)

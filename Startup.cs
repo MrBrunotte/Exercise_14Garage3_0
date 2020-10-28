@@ -28,7 +28,7 @@ namespace Garage3
         {
             services.AddControllersWithViews();
             // Added by Stefan
-            services.AddScoped<ISelectService, TypeSelectService>();
+            services.AddScoped<ISelectService, SelectService>();
 
             services.AddDbContext<Garage3Context>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("Garage3Context")));
