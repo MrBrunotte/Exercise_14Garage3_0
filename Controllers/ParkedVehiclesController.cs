@@ -55,7 +55,7 @@ namespace Garage3.Controllers
                 _context.ParkedVehicle :
                 _context.ParkedVehicle.Where(m => m.RegNum.Contains(viewModel.SearchString));
 
-            vehicles = viewModel.VehicleType == null ?
+            vehicles = viewModel.VehicleTypes == null ?
                 vehicles :
                 vehicles.Where(m => m.VehicleType == viewModel.VehicleTypes);
 
@@ -135,14 +135,18 @@ namespace Garage3.Controllers
             return View(model);
         }
 
-        // GET: ParkedVehicles/Create
-        public IActionResult Create()
+
+        //Soile
+        // GET: ParkedVehicles/CheckInVehicle
+        public IActionResult CheckInVehicle()
         {
+            //var model = new List<CheckInVehicleViewModel>();
+            //ToDo -  set member - as already logged in -  no selectlist
             ViewData["MemberID"] = new SelectList(_context.Set<Member>(), "Id", "FullName");
             ViewData["VehicleTypeID"] = new SelectList(_context.Set<VehicleTypes>(), "ID", "VehicleType");
+
             return View();
         }
-
 
         //Soile
         [HttpPost]
@@ -183,7 +187,20 @@ namespace Garage3.Controllers
             }
             return View(parkedVehicle);
         }
+       
 
+
+        //********** END SOILE **********
+
+
+
+        // GET: ParkedVehicles/Create
+        public IActionResult Create()
+        {
+            ViewData["MemberID"] = new SelectList(_context.Set<Member>(), "Id", "FullName");
+            ViewData["VehicleTypeID"] = new SelectList(_context.Set<VehicleTypes>(), "ID", "VehicleType");
+            return View();
+        }
 
         // POST: ParkedVehicles/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for

@@ -8,7 +8,7 @@ namespace Garage3.Models.ViewModels
     {
         public IEnumerable<ParkedVehicle> VehicleList { get; set; }
         public IEnumerable<SelectListItem> VehicleTypes { get; set; }
-        public VehicleType? VehicleType { get; set; }
+        //public VehicleType? VehicleType { get; set; }
         public string SearchString { get; set; }
     }
 }
