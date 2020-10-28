@@ -13,6 +13,8 @@ namespace Garage3.Controllers
 {
     public class ParkedVehiclesController : Controller
     {
+        private const double costPerMinute = 0.2;
+
         private readonly Garage3Context _context;
 
         public ParkedVehiclesController(Garage3Context context)
@@ -54,7 +56,7 @@ namespace Garage3.Controllers
                 _context.ParkedVehicle :
                 _context.ParkedVehicle.Where(m => m.RegNum.Contains(viewModel.SearchString));
 
-            vehicles = viewModel.VehicleType == null ?
+            vehicles = viewModel.VehicleTypes == null ?
                 vehicles :
                 vehicles.Where(m => m.VehicleType == viewModel.VehicleTypes);
 
@@ -189,8 +191,8 @@ namespace Garage3.Controllers
 
         // Torbjörn
 
-        // GET: ParkedVehicles/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // GET: ParkedVehicles/Checkout/5
+        public async Task<IActionResult> Checkout(int? id)
         {
             if (id == null)
             {
@@ -206,15 +208,30 @@ namespace Garage3.Controllers
                 return NotFound();
             }
 
-            return View(parkedVehicle);
+            var arrival = parkedVehicle.ArrivalTime;
+            var checkout = DateTime.Now;
+
+            var checkoutView = new ParkedVehicleCheckoutViewModel
+            {              
+                Member = parkedVehicle.Member,
+                RegNum = parkedVehicle.RegNum,
+                ArrivalTime = arrival,
+                CheckOutTime = checkout,
+                Period = checkout - arrival,
+                CostPerMinute = costPerMinute,
+                Cost = Math.Round((checkout - arrival).TotalMinutes * costPerMinute, 2)
+            };
+
+            return View(checkoutView);
         }
 
         // Torbjörn
+        // ParkedVehicle is deleted and Available is set to True in the ParkingSpace(s) that was used
 
-        // POST: ParkedVehicles/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: ParkedVehicles/Checkout/5
+        [HttpPost, ActionName("Checkout")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> CheckoutConfirmed(int id)
         {
             var parkedVehicle = await _context.ParkedVehicle
                 .Include(p => p.Parking)
