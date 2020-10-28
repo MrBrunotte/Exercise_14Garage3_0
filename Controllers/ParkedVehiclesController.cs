@@ -404,5 +404,10 @@ namespace Garage3.Controllers
         {
             return _context.ParkedVehicle.Any(e => e.RegNum == regNum);
         }
+
+        private bool MemberExists(int memberId)
+        {
+            return _context.ParkedVehicle.Any(e => e.MemberID == memberId);
+        }
     }
 }
