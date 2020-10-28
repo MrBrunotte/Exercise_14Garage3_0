@@ -1,0 +1,39 @@
+﻿@model Garage3.Models.ViewModels.ParkedVehicleCheckoutViewModel
+
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<h1>Checkout @Model.RegNum</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.RegNum)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.RegNum)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Member)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Member.FullName)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.ArrivalTime)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.ArrivalTime)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.CheckOutTime)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.CheckOutTime)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Period)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Period)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.CostPerMinute)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.CostPerMinute)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Cost)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Cost)</dd>
+    </dl>
+    
+    <form asp-action="Checkout">
+        <input type="hidden" asp-for="ID" />
+        <input type="submit" value="Checkout" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>
