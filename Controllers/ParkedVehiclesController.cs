@@ -112,10 +112,10 @@ namespace Garage3.Controllers
         public async Task<IActionResult> OverView()
         {
             
-            var vehicles = await _context.ParkedVehicle.ToListAsync();
+            var vehicles = await _context.ParkedVehicle.Include(p => p.VehicleType).ToListAsync();
 
             var model = new List<OverViewViewModel>();
-            //var pV = await _context.ParkedVehicle.Include(p => p.VehicleType.VehicleType).ToListAsync();
+            
 
             foreach (var vehicle in vehicles)
             {
@@ -142,7 +142,7 @@ namespace Garage3.Controllers
         {
             //var model = new List<CheckInVehicleViewModel>();
             //ToDo -  set member - as already logged in -  no selectlist
-            ViewData["MemberID"] = new SelectList(_context.Set<Member>(), "Id", "FullName");
+           // ViewData["MemberID"] = new SelectList(_context.Set<Member>(), "Id", "FullName");
             ViewData["VehicleTypeID"] = new SelectList(_context.Set<VehicleTypes>(), "ID", "VehicleType");
 
             return View();
@@ -175,7 +175,7 @@ namespace Garage3.Controllers
                     if (RegNumExists(parkedVehicle.RegNum))
                     {
                         return RedirectToAction(nameof(Index));
-                        // return RedirectToAction(nameof(Feedback), new { RegNum = parkedVehicle.RegNum, Message = "The Registraion number exist, Some error occured" });
+                        //return RedirectToAction(nameof(Feedback), new { RegNum = parkedVehicle.RegNum, Message = "The Registraion number exist, Some error occured" });
                     }
                     else
                     {
