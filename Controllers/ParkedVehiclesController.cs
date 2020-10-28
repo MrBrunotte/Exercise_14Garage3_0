@@ -359,11 +359,7 @@ namespace Garage3.Controllers
                 .ThenInclude(p => p.ParkingSpace)
                 .FirstOrDefaultAsync(m => m.ID == id);
 
-            // Save for use in receipt
-            var regnum = parkedVehicle.RegNum;
-            var arrival = parkedVehicle.ArrivalTime;
-            var checkout = DateTime.Now;
-
+            // To be used in Receipt         
             TempData["regnum"] = parkedVehicle.RegNum;
             TempData["arrival"] = parkedVehicle.ArrivalTime;
             TempData["checkout"] = DateTime.Now;
