@@ -1,26 +1,27 @@
-﻿@model Garage3.Models.ParkedVehicle
+﻿@model Garage3.Models.ViewModels.CheckInVehicleViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "CheckInVehicle";
 }
 
-<h1>Park your Vehicle</h1>
+<h1>CheckInVehicle</h1>
 
-<h4>Fill in the required details</h4>
+<h4>Park YOUR Vehicle</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
-            <div class="form-group">
-                <label asp-for="Member.FullName" class="control-label"></label>
-                <select asp-for="Member.FullName" class="form-control" asp-items="ViewBag.MemberID"></select>
-            </div>
+        <form asp-action="CheckInVehicle">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="MemberID" class="control-label"></label>
+                <input asp-for="MemberID" class="form-control" />
+                <span asp-validation-for="MemberID" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="VehicleType.VehicleType" class="control-label"></label>
                 <select asp-for="VehicleType.VehicleType" class="form-control" asp-items="ViewBag.VehicleTypeID"></select>
             </div>
-           
+            
             <div class="form-group">
                 <label asp-for="RegNum" class="control-label"></label>
                 <input asp-for="RegNum" class="form-control" />
@@ -41,8 +42,9 @@
                 <input asp-for="Model" class="form-control" />
                 <span asp-validation-for="Model" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <input type="submit" value="CHECK IN VEHICLE" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>

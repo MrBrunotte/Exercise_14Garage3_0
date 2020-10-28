@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Garage3.Data;
 using Garage3.Models;
 using Garage3.Models.ViewModels;
+using System.Data;
 
 namespace Garage3.Controllers
 {
@@ -108,11 +109,98 @@ namespace Garage3.Controllers
             return View(detailsView);
         }
 
+
+        //Soile
+        public async Task<IActionResult> OverView()
+        {
+            
+            var vehicles = await _context.ParkedVehicle.Include(p => p.VehicleType).ToListAsync();
+
+            var model = new List<OverViewViewModel>();
+            
+
+            foreach (var vehicle in vehicles)
+            {
+
+                var arrival = vehicle.ArrivalTime;
+                var nowTime = DateTime.Now;
+
+                model.Add(new OverViewViewModel
+                {
+                    VehicleType = vehicle.VehicleType,
+                    RegNum = vehicle.RegNum,
+                    ArrivalTime = arrival,
+                    Period = nowTime - arrival
+                });
+            }
+
+            return View(model);
+        }
+
+
+        //Soile
+        // GET: ParkedVehicles/CheckInVehicle
+        public IActionResult CheckInVehicle()
+        {
+            //var model = new List<CheckInVehicleViewModel>();
+            //ToDo -  set member - as already logged in -  no selectlist
+           // ViewData["MemberID"] = new SelectList(_context.Set<Member>(), "Id", "FullName");
+            ViewData["VehicleTypeID"] = new SelectList(_context.Set<VehicleTypes>(), "ID", "VehicleType");
+
+            return View();
+        }
+
+        //Soile
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CheckInVehicle([Bind("ID,VehicleType,Member,RegNum,Color,Make,Model")] ParkedVehicle parkedVehicle)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (!RegNumExists(parkedVehicle.RegNum))
+                    {
+                        parkedVehicle.ArrivalTime = DateTime.Now;
+                        _context.Add(parkedVehicle);
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("RegNum", $"{parkedVehicle.RegNum} Already parked.");
+                        return View();
+                    }
+                }
+                catch (DBConcurrencyException)
+                {
+                    //ToDo
+                    if (RegNumExists(parkedVehicle.RegNum))
+                    {
+                        return RedirectToAction(nameof(Index));
+                        //return RedirectToAction(nameof(Feedback), new { RegNum = parkedVehicle.RegNum, Message = "The Registraion number exist, Some error occured" });
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                //return RedirectToAction(nameof(Feedback), new { RegNum = parkedVehicle.RegNum, Message = "Has been checked in" });
+                 return RedirectToAction(nameof(Index));
+            }
+            return View(parkedVehicle);
+        }
+       
+
+
+        //********** END SOILE **********
+
+
+
         // GET: ParkedVehicles/Create
         public IActionResult Create()
         {
-            ViewData["MemberID"] = new SelectList(_context.Set<Member>(), "Id", "ConfirmPassword");
-            ViewData["VehicleTypesID"] = new SelectList(_context.Set<VehicleTypes>(), "ID", "VehicleTYpe");
+            ViewData["MemberID"] = new SelectList(_context.Set<Member>(), "Id", "FullName");
+            ViewData["VehicleTypeID"] = new SelectList(_context.Set<VehicleTypes>(), "ID", "VehicleType");
             return View();
         }
 
@@ -121,16 +209,48 @@ namespace Garage3.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,VehicleTypesID,MemberID,RegNum,Color,Make,Model,ArrivalTime")] ParkedVehicle parkedVehicle)
+        public async Task<IActionResult> Create([Bind("ID,VehicleTypeID,MemberID,RegNum,Color,Make,Model")] ParkedVehicle parkedVehicle)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(parkedVehicle);
-                await _context.SaveChangesAsync();
+
+                try
+                {
+                    if (!RegNumExists(parkedVehicle.RegNum))
+                    {
+                        parkedVehicle.ArrivalTime = DateTime.Now;
+                        _context.Add(parkedVehicle);
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("RegNum", $"{parkedVehicle.RegNum} Already parked.");
+                        return View();
+                    }
+                }
+                catch (DBConcurrencyException)
+                {
+
+                    //ToDo
+                    if (RegNumExists(parkedVehicle.RegNum))
+                    {
+                        return RedirectToAction(nameof(Index));
+                        // return RedirectToAction(nameof(Feedback), new { RegNum = parkedVehicle.RegNum, Message = "The Registraion number exist, Some error occured" });
+                    }
+                    else
+                    {
+                        throw;
+                    };
+                }
+                //return RedirectToAction(nameof(Feedback), new { RegNum = parkedVehicle.RegNum, Message = "Has been checked in" });
                 return RedirectToAction(nameof(Index));
+
+                //_context.Add(parkedVehicle);
+                //await _context.SaveChangesAsync();
+                //return RedirectToAction(nameof(Index));
             }
-            ViewData["MemberID"] = new SelectList(_context.Set<Member>(), "Id", "ConfirmPassword", parkedVehicle.MemberID);
-            ViewData["VehicleTypeID"] = new SelectList(_context.Set<VehicleTypes>(), "ID", "VehicleTYpe", parkedVehicle.VehicleTypeID);
+            ViewData["MemberID"] = new SelectList(_context.Set<Member>(), "Id", "FullName", parkedVehicle.MemberID);
+            ViewData["VehicleTypeID"] = new SelectList(_context.Set<VehicleTypes>(), "ID", "VehicleType", parkedVehicle.VehicleTypeID);
             return View(parkedVehicle);
         }
 
@@ -147,8 +267,8 @@ namespace Garage3.Controllers
             {
                 return NotFound();
             }
-            ViewData["MemberID"] = new SelectList(_context.Set<Member>(), "Id", "ConfirmPassword", parkedVehicle.MemberID);
-            ViewData["VehicleTypeID"] = new SelectList(_context.Set<VehicleTypes>(), "ID", "VehicleTYpe", parkedVehicle.VehicleTypeID);
+            ViewData["MemberID"] = new SelectList(_context.Set<Member>(), "Id", "FullName", parkedVehicle.MemberID);
+            ViewData["VehicleTypeID"] = new SelectList(_context.Set<VehicleTypes>(), "ID", "VehicleType", parkedVehicle.VehicleTypeID);
             return View(parkedVehicle);
         }
 
@@ -157,7 +277,7 @@ namespace Garage3.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,VehicleTypesID,MemberID,RegNum,Color,Make,Model,ArrivalTime")] ParkedVehicle parkedVehicle)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,VehicleTypesID,MemberID,RegNum,Color,Make,Model")] ParkedVehicle parkedVehicle)
         {
             if (id != parkedVehicle.ID)
             {
@@ -280,6 +400,11 @@ namespace Garage3.Controllers
         private bool ParkedVehicleExists(int id)
         {
             return _context.ParkedVehicle.Any(e => e.ID == id);
+        }
+        //Soile
+        private bool RegNumExists(string regNum)
+        {
+            return _context.ParkedVehicle.Any(e => e.RegNum == regNum);
         }
     }
 }
