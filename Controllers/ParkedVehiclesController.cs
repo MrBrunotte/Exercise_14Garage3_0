@@ -42,12 +42,11 @@ namespace Garage3.Controllers
         {
             return await _context.ParkedVehicle
                          .Select(m => m.VehicleType)
-                         // Only distinct type, no multiples
                          .Distinct()
                          .Select(m => new SelectListItem
                          {
-                             Text = m.ToString(),
-                             Value = m.ToString()
+                             Text = m.VehicleType,
+                             Value = m.VehicleType
                          })
                          .ToListAsync();
         }
@@ -58,9 +57,9 @@ namespace Garage3.Controllers
                 _context.ParkedVehicle :
                 _context.ParkedVehicle.Where(m => m.RegNum.Contains(viewModel.SearchString));
 
-            vehicles = viewModel.VehicleTypes == null ?
+            vehicles = viewModel.VehicleType == null ?
                 vehicles :
-                vehicles.Where(m => m.VehicleType == viewModel.VehicleTypes);
+                vehicles.Where(m => m.VehicleType == viewModel.VehicleType);
 
             var model = new VehicleTypeViewModel
             {
@@ -116,11 +115,11 @@ namespace Garage3.Controllers
         //Soile
         public async Task<IActionResult> OverView()
         {
-            
+
             var vehicles = await _context.ParkedVehicle.Include(p => p.VehicleType).ToListAsync();
 
             var model = new List<OverViewViewModel>();
-            
+
 
             foreach (var vehicle in vehicles)
             {
@@ -192,7 +191,7 @@ namespace Garage3.Controllers
             }
             return View(parkedVehicle);
         }
-       
+
 
 
         //********** END SOILE **********
@@ -335,7 +334,7 @@ namespace Garage3.Controllers
             var checkout = DateTime.Now;
 
             var checkoutView = new ParkedVehicleCheckoutViewModel
-            {              
+            {
                 Member = parkedVehicle.Member,
                 RegNum = parkedVehicle.RegNum,
                 ArrivalTime = arrival,
@@ -362,7 +361,7 @@ namespace Garage3.Controllers
                 .ThenInclude(p => p.ParkingSpace)
                 .FirstOrDefaultAsync(m => m.ID == id);
 
-            // To be used in Receipt         
+            // To be used in Receipt
             TempData["regnum"] = parkedVehicle.RegNum;
             TempData["arrival"] = parkedVehicle.ArrivalTime;
             TempData["checkout"] = DateTime.Now;
@@ -371,7 +370,7 @@ namespace Garage3.Controllers
             // Update ParkingSpace (set Available = True)
             parkedVehicle.Parking.Select(s => s.ParkingSpace)
                 .ToList()
-                .ForEach(p => p.Available = true);         
+                .ForEach(p => p.Available = true);
 
            _context.ParkedVehicle.Remove(parkedVehicle);
            await _context.SaveChangesAsync();
