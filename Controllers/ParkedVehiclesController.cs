@@ -111,12 +111,15 @@ namespace Garage3.Controllers
         //Soile
         public async Task<IActionResult> OverView()
         {
+            
             var vehicles = await _context.ParkedVehicle.ToListAsync();
-            var model = new List<OverViewViewModel>();
 
+            var model = new List<OverViewViewModel>();
+            //var pV = await _context.ParkedVehicle.Include(p => p.VehicleType.VehicleType).ToListAsync();
 
             foreach (var vehicle in vehicles)
             {
+
                 var arrival = vehicle.ArrivalTime;
                 var nowTime = DateTime.Now;
 
