@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Garage3.Models.ViewModels
 {
-    public class ReceiptViewModel
+    public class ParkedVehicleReceiptViewModel
     {
         public int ID { get; set; }
         [Display(Name = "Registration number")]
