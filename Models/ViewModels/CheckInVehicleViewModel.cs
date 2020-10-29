@@ -10,9 +10,9 @@ namespace Garage3.Models.ViewModels
 {
     public class CheckInVehicleViewModel
     {
-        
+        [Display(Name = "Type of Vehicle")]
         public int VehicleTypeID { get; set; }
-
+        [Display(Name = "Member")]
         public int MemberID { get; set; }
 
         [Required, StringLength(8, ErrorMessage = "Registration number can only be 8 characters long"), Display(Name = "Registration number")]
