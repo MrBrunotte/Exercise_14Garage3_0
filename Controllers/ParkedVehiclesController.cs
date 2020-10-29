@@ -134,6 +134,7 @@ namespace Garage3.Controllers
                 model.Add(new OverViewViewModel
                 {
                     Member = vehicle.Member,
+                    PhoneNum = vehicle.Member.PhoneNum,
                     VehicleType = vehicle.VehicleType,
                     RegNum = vehicle.RegNum,
                     ArrivalTime = arrival,
@@ -145,7 +146,59 @@ namespace Garage3.Controllers
             return View(model);
         }
 
+        //Soile
+        public async Task<IActionResult> MemberOverView()
+        {
 
+            //var vehicles = await _context.ParkedVehicle
+            //    .Include(p => p.Member)
+            //    //.Include(p => p.VehicleType)
+            //    .ToListAsync();
+
+            //if (vehicles == null)
+            //{
+            //    return NotFound();
+            //}
+
+            var members = await _context.Members
+               .ToListAsync();
+
+            var model = new List<MemberOverViewViewModel>();
+            foreach (var member in members)
+            {
+                model.Add(new MemberOverViewViewModel
+                {
+                    Member = member.FullName,
+                    FirstName = member.FirstName,
+                    LastName = member.LastName,
+                    Email = member.Email,
+                    PhoneNum = member.PhoneNum,
+                    NumOfVehicles = 1,
+                    ID = member.Id
+                });
+            }
+
+            //foreach (var vehicle in vehicles)
+            //{
+
+            //    var arrival = vehicle.ArrivalTime;
+            //    var nowTime = DateTime.Now;
+
+            //    model.Add(new MemberOverViewViewModel
+            //    {
+            //        Member = vehicle.Member,
+            //        VehicleType = vehicle.VehicleType,
+            //        Make = vehicle.Make,
+            //        Model = vehicle.Model,
+            //        RegNum = vehicle.RegNum,
+            //        NumOfVehicles = vehicle.RegNum.Count(),
+            //        ID = vehicle.ID
+            //    });
+            //}
+
+            return View(model);
+        }
+        
         //Soile
         public IActionResult ValidateRegNum(string regNum)
         {

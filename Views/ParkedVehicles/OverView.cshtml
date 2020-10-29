@@ -16,6 +16,9 @@
                 @Html.DisplayNameFor(model => model.Member)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.PhoneNum)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.VehicleType)
             </th>
             <th>
@@ -35,6 +38,9 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Member.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Member.PhoneNum)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.VehicleType.VehicleType)
