@@ -1,0 +1,39 @@
+﻿@model Garage3.Models.ViewModels.AddNewVehicleTypeViewModel
+
+@{
+    ViewData["Title"] = "AddNewVehicleType";
+}
+
+<h1>AddNewVehicleType</h1>
+
+<h4>AddNewVehicleTypeViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddNewVehicleType">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+           
+            <div class="form-group">
+                <label asp-for="VehicleType" class="control-label"></label>
+                <input asp-for="VehicleType" class="form-control" />
+                <span asp-validation-for="VehicleType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FillsNumberOfSpaces" class="control-label"></label>
+                <input asp-for="FillsNumberOfSpaces" class="form-control" />
+                <span asp-validation-for="FillsNumberOfSpaces" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add New Vehicle Type" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

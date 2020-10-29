@@ -193,6 +193,7 @@ namespace Garage3.Controllers
 
             return View(viewModel);
         }
+
         //Soile
         public IActionResult CheckInVehicle()
         {
@@ -250,8 +251,51 @@ namespace Garage3.Controllers
            
             return View(viewModel);
         }
-       
 
+        
+        //Soile
+        public IActionResult AddNewVehicleType()
+        {
+            return View();
+        }
+
+        //Soile
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddNewVehicleType(AddNewVehicleTypeViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+
+                var vTYpe = new VehicleTypes
+                {
+                    VehicleType = viewModel.VehicleType,
+                    FillsNumberOfSpaces = viewModel.FillsNumberOfSpaces
+                };
+                if (!VehicleExists(viewModel.VehicleType))
+                {
+                    if (viewModel.FillsNumberOfSpaces.ToString().Equals(""))
+                    {
+                        viewModel.FillsNumberOfSpaces = 1;
+                    }
+                    _context.Add(vTYpe);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    return Json($"{viewModel.VehicleType} is already in use");
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(viewModel);
+        }
+
+        private bool VehicleExists(string vType)
+        {
+            return _context.VehicleTypes.Any(e => e.VehicleType == vType);
+        }
 
         //********** END SOILE **********
 
