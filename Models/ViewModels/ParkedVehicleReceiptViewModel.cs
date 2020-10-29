@@ -25,5 +25,7 @@ namespace Garage3.Models.ViewModels
         public TimeSpan Period { get; set; }
         [DisplayFormat(DataFormatString = "{0:C}")]
         public double Cost { get; set; }
+        [Display(Name = "Parking Space(s)")]
+        public ICollection<int> ParkingSpaces { get; set; }
     }
 }

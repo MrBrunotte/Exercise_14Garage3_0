@@ -90,8 +90,6 @@ namespace Garage3.Controllers
                 return NotFound();
             }
 
-            //var x = parkedVehicle.VehicleType.VehicleType
-
             var detailsView = new ParkedVehicleDetailsViewModel
             {
                 VehicleType = parkedVehicle.VehicleType,
@@ -427,6 +425,7 @@ namespace Garage3.Controllers
             TempData["arrival"] = parkedVehicle.ArrivalTime;
             TempData["checkout"] = DateTime.Now;
             TempData["membername"] = parkedVehicle.Member.FullName;
+            TempData["parkingspace"] = parkedVehicle.Parking.Select(s => s.ParkingSpace.ParkingSpaceNum).ToList();
 
             // Update ParkingSpace (set Available = True)
             parkedVehicle.Parking.Select(s => s.ParkingSpace)
@@ -442,6 +441,13 @@ namespace Garage3.Controllers
         {
             var arrival = (DateTime)TempData["arrival"];
             var checkout = (DateTime)TempData["checkout"];
+            var parkingSpaces = (ICollection<int>)TempData["parkingspace"];
+
+            // TODO: This is to handle if vehicles exist without being parked. During deveopment
+            if (parkingSpaces == null)
+            {
+                parkingSpaces = new List<int>() { 0 };
+            }
 
             var receipt = new ParkedVehicleReceiptViewModel
             {
@@ -450,7 +456,8 @@ namespace Garage3.Controllers
                 ArrivalTime = arrival,
                 CheckOutTime = checkout,
                 Period = checkout - arrival,
-                Cost = Math.Round((checkout - arrival).TotalMinutes * costPerMinute, 2)
+                Cost = Math.Round((checkout - arrival).TotalMinutes * costPerMinute, 2),
+                ParkingSpaces = parkingSpaces
             };
 
             return View(receipt);
