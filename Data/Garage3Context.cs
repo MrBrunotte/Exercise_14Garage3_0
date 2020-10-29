@@ -18,6 +18,10 @@ namespace Garage3.Data
         public DbSet<ParkedVehicle> ParkedVehicle { get; set; }
         public DbSet<VehicleTypes> VehicleTypes { get; set; }
 
+        //Soile
+        public DbSet<Member> Members{ get; set; }
+        public DbSet<VehicleTypes> VehicleTypes{ get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelbuilder)
         {
 
@@ -168,23 +172,6 @@ namespace Garage3.Data
 
               );
         }
-
-        //private ParkingSpace[] AddParkingSpaces()
-        //{
-        //    ParkingSpace p = new ParkingSpace();
-        //    for (int i = 0; i < 100; i++)
-        //    {
-        //        new ParkingSpace
-        //        {
-        //            ID = i,
-        //            Available = true,
-        //            ParkingSpaceNum = i
-
-        //        };
-
-
-        //    }
-        //    return ;
-        //}
+     
     }
 }
