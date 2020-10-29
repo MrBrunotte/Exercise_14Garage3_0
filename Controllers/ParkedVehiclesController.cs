@@ -34,19 +34,18 @@ namespace Garage3.Controllers
                 VehicleList = vehicles,
                 VehicleTypes = await TypeAsync()
             };
-            ViewData["VehicleTypeID"] = new SelectList(_context.Set<VehicleTypes>(), "ID", "VehicleType");
+            //ViewData["VehicleTypeID"] = new SelectList(_context.Set<VehicleTypes>(), "ID", "VehicleType");
             return View(model);
         }
 
         private async Task<IEnumerable<SelectListItem>> TypeAsync()
         {
-            return await _context.ParkedVehicle
-                         .Select(m => m.VehicleType)
-                         .Distinct()
+            return await _context.VehicleTypes
+
                          .Select(m => new SelectListItem
                          {
                              Text = m.VehicleType,
-                             Value = m.VehicleType
+                             Value = m.ID.ToString()
                          })
                          .ToListAsync();
         }
@@ -59,7 +58,7 @@ namespace Garage3.Controllers
 
             vehicles = viewModel.VehicleType == null ?
                 vehicles :
-                vehicles.Where(m => m.VehicleType == viewModel.VehicleType);
+                vehicles.Where(m => m.VehicleTypeID == viewModel.VehicleType);
 
             var model = new VehicleTypeViewModel
             {
