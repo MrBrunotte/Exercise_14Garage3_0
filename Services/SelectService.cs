@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace Garage3.Services
 {
-    public class TypeSelectService : ISelectService
+    public class SelectService : ISelectService
     {
         private readonly Garage3Context _context;
 
-        public TypeSelectService(Garage3Context _context)
+        public SelectService(Garage3Context _context)
         {
             this._context = _context;
         }
 
-        public async Task<IEnumerable<SelectListItem>> TypeAsync()
+        public async Task<IEnumerable<SelectListItem>> GetTypeAsync()
         {
             return await _context.VehicleTypes
                          .Select(m => new SelectListItem

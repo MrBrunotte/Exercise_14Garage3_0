@@ -34,7 +34,6 @@ namespace Garage3.Controllers
                 VehicleList = vehicles,
                 VehicleTypes = await TypeAsync()
             };
-            //ViewData["VehicleTypeID"] = new SelectList(_context.Set<VehicleTypes>(), "ID", "VehicleType");
             return View(model);
         }
 
