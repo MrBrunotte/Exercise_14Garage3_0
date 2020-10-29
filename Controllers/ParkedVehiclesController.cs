@@ -90,8 +90,6 @@ namespace Garage3.Controllers
                 return NotFound();
             }
 
-            //var x = parkedVehicle.VehicleType.VehicleType
-
             var detailsView = new ParkedVehicleDetailsViewModel
             {
                 VehicleType = parkedVehicle.VehicleType,
@@ -195,6 +193,7 @@ namespace Garage3.Controllers
 
             return View(viewModel);
         }
+
         //Soile
         public IActionResult CheckInVehicle()
         {
@@ -252,8 +251,51 @@ namespace Garage3.Controllers
            
             return View(viewModel);
         }
-       
 
+        
+        //Soile
+        public IActionResult AddNewVehicleType()
+        {
+            return View();
+        }
+
+        //Soile
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddNewVehicleType(AddNewVehicleTypeViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+
+                var vTYpe = new VehicleTypes
+                {
+                    VehicleType = viewModel.VehicleType,
+                    FillsNumberOfSpaces = viewModel.FillsNumberOfSpaces
+                };
+                if (!VehicleExists(viewModel.VehicleType))
+                {
+                    if (viewModel.FillsNumberOfSpaces.ToString().Equals(""))
+                    {
+                        viewModel.FillsNumberOfSpaces = 1;
+                    }
+                    _context.Add(vTYpe);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    return Json($"{viewModel.VehicleType} is already in use");
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(viewModel);
+        }
+
+        private bool VehicleExists(string vType)
+        {
+            return _context.VehicleTypes.Any(e => e.VehicleType == vType);
+        }
 
         //********** END SOILE **********
 
@@ -427,6 +469,7 @@ namespace Garage3.Controllers
             TempData["arrival"] = parkedVehicle.ArrivalTime;
             TempData["checkout"] = DateTime.Now;
             TempData["membername"] = parkedVehicle.Member.FullName;
+            TempData["parkingspace"] = parkedVehicle.Parking.Select(s => s.ParkingSpace.ParkingSpaceNum).ToList();
 
             // Update ParkingSpace (set Available = True)
             parkedVehicle.Parking.Select(s => s.ParkingSpace)
@@ -442,6 +485,13 @@ namespace Garage3.Controllers
         {
             var arrival = (DateTime)TempData["arrival"];
             var checkout = (DateTime)TempData["checkout"];
+            var parkingSpaces = (ICollection<int>)TempData["parkingspace"];
+
+            // TODO: This is to handle if vehicles exist without being parked. During deveopment
+            if (parkingSpaces == null)
+            {
+                parkingSpaces = new List<int>() { 0 };
+            }
 
             var receipt = new ParkedVehicleReceiptViewModel
             {
@@ -450,7 +500,8 @@ namespace Garage3.Controllers
                 ArrivalTime = arrival,
                 CheckOutTime = checkout,
                 Period = checkout - arrival,
-                Cost = Math.Round((checkout - arrival).TotalMinutes * costPerMinute, 2)
+                Cost = Math.Round((checkout - arrival).TotalMinutes * costPerMinute, 2),
+                ParkingSpaces = parkingSpaces
             };
 
             return View(receipt);
