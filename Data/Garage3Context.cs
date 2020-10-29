@@ -18,6 +18,7 @@ namespace Garage3.Data
         public DbSet<ParkedVehicle> ParkedVehicle { get; set; }
         public DbSet<VehicleTypes> VehicleTypes { get; set; }
         public DbSet<Member> Members{ get; set; }
+        public DbSet<ParkingSpace> ParkingSpace { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelbuilder)
         {
