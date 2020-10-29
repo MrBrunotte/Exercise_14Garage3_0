@@ -9,7 +9,7 @@ using Garage3.Data;
 using Garage3.Models;
 using Garage3.Models.ViewModels;
 using System.Data;
-
+using System.Xml.Schema;
 
 namespace Garage3.Controllers
 {
@@ -530,6 +530,28 @@ namespace Garage3.Controllers
         private bool EmailExists(string email)
         {
             return _context.Members.Any(e => e.Email == email);
+        }
+
+        // Check if there are parking spaces available
+        // If more than one, they have to be adjacent to each other
+        private bool CheckParkingSpaces(int numberOfSpaces)
+        {
+            var availableSpaces = _context.ParkingSpace
+                .Where(s => s.Available == true)
+                .OrderBy(s => s.ParkingSpaceNum)
+                .ToList();
+
+            var adjacentFound = false;
+            // List contains free parking spaces sorted on ParkingSpace number.            
+            for (var i = 0; i < availableSpaces.Count - numberOfSpaces + 1; i++)
+            {
+                if (availableSpaces[i + numberOfSpaces - 1].ParkingSpaceNum == availableSpaces[i].ParkingSpaceNum + numberOfSpaces - 1)
+                {
+                    adjacentFound = true;
+                    break;
+                }
+            }
+            return adjacentFound;
         }
     }
 }
