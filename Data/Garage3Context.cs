@@ -15,11 +15,9 @@ namespace Garage3.Data
         {
         }
 
-        public DbSet<Garage3.Models.ParkedVehicle> ParkedVehicle { get; set; }
-
-        //Soile
+        public DbSet<ParkedVehicle> ParkedVehicle { get; set; }
+        public DbSet<VehicleTypes> VehicleTypes { get; set; }
         public DbSet<Member> Members{ get; set; }
-        public DbSet<VehicleTypes> VehicleTypes{ get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelbuilder)
         {
@@ -165,6 +163,6 @@ namespace Garage3.Data
 
               );
         }
-     
+
     }
 }

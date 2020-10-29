@@ -33,22 +33,20 @@ namespace Garage3.Controllers
             var model = new VehicleTypeViewModel
             {
                 VehicleList = vehicles,
-                VehicleTypes = await TypeAsync()
+                VehicleTypes = await GetTypeAsync()
             };
             return View(model);
         }
 
-        private async Task<IEnumerable<SelectListItem>> TypeAsync()
+        private async Task<IEnumerable<SelectListItem>> GetTypeAsync()
         {
-            //Soile Changed
             return await _context.VehicleTypes
-                        .Select(m => new SelectListItem
-                        {
-                            Text = m.VehicleType,
-                            Value = m.ID.ToString()
-                        })
-                        .ToListAsync();
-        
+                         .Select(m => new SelectListItem
+                         {
+                             Text = m.VehicleType,
+                             Value = m.ID.ToString()
+                         })
+                         .ToListAsync();
         }
 
         public async Task<IActionResult> Filter(VehicleTypeViewModel viewModel)
@@ -57,14 +55,14 @@ namespace Garage3.Controllers
                 _context.ParkedVehicle.Include(p => p.VehicleType) :
                 _context.ParkedVehicle.Include(p => p.VehicleType).Where(m => m.RegNum.Contains(viewModel.SearchString));
 
-            vehicles = viewModel.VehicleTypes == null ?
+            vehicles = viewModel.VehicleTypeID == null ?
                 vehicles :
-                vehicles.Where(m => m.VehicleType == viewModel.VehicleTypes);
+                vehicles.Where(m => m.VehicleTypeID == viewModel.VehicleTypeID);
 
             var model = new VehicleTypeViewModel
             {
                 VehicleList = await vehicles.ToListAsync(),
-                VehicleTypes = await TypeAsync()
+                VehicleTypes = await GetTypeAsync()
             };
 
             return View(nameof(Index), model);
@@ -115,7 +113,7 @@ namespace Garage3.Controllers
         //Soile
         public async Task<IActionResult> OverView()
         {
-            
+
             var vehicles = await _context.ParkedVehicle.Include(p => p.VehicleType).ToListAsync();
             if (vehicles == null)
             {
@@ -123,7 +121,8 @@ namespace Garage3.Controllers
             }
 
             var model = new List<OverViewViewModel>();
-            
+
+
             foreach (var vehicle in vehicles)
             {
 
