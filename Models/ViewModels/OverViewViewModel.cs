@@ -12,6 +12,9 @@ namespace Garage3.Models.ViewModels
         [Display(Name = "Type of Vehicle")]
         public VehicleTypes VehicleType { get; set; }
 
+        [Display(Name = "Owner")]
+        public Member Member { get; set; }
+
         [Display(Name = "Registration number")]
         public string RegNum { get; set; }
 
