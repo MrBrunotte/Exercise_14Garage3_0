@@ -39,9 +39,7 @@ namespace Garage3.Controllers
 
         private async Task<IEnumerable<SelectListItem>> GetTypeAsync()
         {
-            return await _context.ParkedVehicle
-                         .Select(m => m.VehicleType)
-                         .Distinct()
+            return await _context.VehicleTypes
                          .Select(m => new SelectListItem
                          {
                              Text = m.VehicleType,
@@ -56,9 +54,9 @@ namespace Garage3.Controllers
                 _context.ParkedVehicle.Include(p => p.VehicleType) :
                 _context.ParkedVehicle.Include(p => p.VehicleType).Where(m => m.RegNum.Contains(viewModel.SearchString));
 
-            vehicles = viewModel.VehicleTypes == null ?
+            vehicles = viewModel.VehicleTypeID == null ?
                 vehicles :
-                vehicles.Where(m => m.VehicleTypeID == viewModel.VehicleType);
+                vehicles.Where(m => m.VehicleTypeID == viewModel.VehicleTypeID);
 
             var model = new VehicleTypeViewModel
             {

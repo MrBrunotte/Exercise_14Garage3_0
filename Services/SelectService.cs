@@ -27,5 +27,15 @@ namespace Garage3.Services
                          })
                          .ToListAsync();
         }
+        public async Task<IEnumerable<SelectListItem>> GetMemberAsync()
+        {
+            return await _context.Members
+                         .Select(m => new SelectListItem
+                         {
+                             Text = m.FullName,
+                             Value = m.Id.ToString()
+                         })
+                         .ToListAsync();
+        }
     }
 }
