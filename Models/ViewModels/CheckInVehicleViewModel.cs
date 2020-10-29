@@ -17,6 +17,7 @@ namespace Garage3.Models.ViewModels
 
         [Required, StringLength(8, ErrorMessage = "Registration number can only be 8 characters long"), Display(Name = "Registration number")]
         //[Remote("ValidateRegNum", "Validator", ErrorMessage = "Please enter a valid REGISTRATION NUMBER.")]
+        // [Remote(action: "ValidateRegNum", controller: "ParkedVehicles")]
         public string RegNum { get; set; }
 
         [Required, StringLength(30, ErrorMessage = "Do not enter more than 30 characters"), Display(Name = "Vehicle Color")]

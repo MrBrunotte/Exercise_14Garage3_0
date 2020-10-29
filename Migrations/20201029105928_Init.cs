@@ -8,7 +8,7 @@ namespace Garage3.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Member",
+                name: "Members",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -16,13 +16,11 @@ namespace Garage3.Migrations
                     FirstName = table.Column<string>(maxLength: 30, nullable: false),
                     LastName = table.Column<string>(maxLength: 30, nullable: false),
                     Email = table.Column<string>(maxLength: 60, nullable: false),
-                    PhoneNum = table.Column<string>(maxLength: 30, nullable: false),
-                    Password = table.Column<string>(nullable: false),
-                    ConfirmPassword = table.Column<string>(nullable: false)
+                    PhoneNum = table.Column<string>(maxLength: 30, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Member", x => x.Id);
+                    table.PrimaryKey("PK_Members", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -71,9 +69,9 @@ namespace Garage3.Migrations
                 {
                     table.PrimaryKey("PK_ParkedVehicle", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_ParkedVehicle_Member_MemberID",
+                        name: "FK_ParkedVehicle_Members_MemberID",
                         column: x => x.MemberID,
-                        principalTable: "Member",
+                        principalTable: "Members",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -111,13 +109,13 @@ namespace Garage3.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Member",
-                columns: new[] { "Id", "ConfirmPassword", "Email", "FirstName", "LastName", "Password", "PhoneNum" },
+                table: "Members",
+                columns: new[] { "Id", "Email", "FirstName", "LastName", "PhoneNum" },
                 values: new object[,]
                 {
-                    { 1, "plugga", "kalle.kula@hotail.com", "Kalle", "Kula", "plugga", "070234567" },
-                    { 2, "plugga2", "and.and@hotail.com", "Andreas", "Andersson", "plugga2", "070234568" },
-                    { 3, "plugga3", "zlatan@hotail.com", "Zlatan", "Ibrahimovic", "plugga3", "070234569" }
+                    { 1, "kalle.kula@hotail.com", "Kalle", "Kula", "070234567" },
+                    { 2, "and.and@hotail.com", "Andreas", "Andersson", "070234568" },
+                    { 3, "zlatan@hotail.com", "Zlatan", "Ibrahimovic", "070234569" }
                 });
 
             migrationBuilder.InsertData(
@@ -194,7 +192,7 @@ namespace Garage3.Migrations
                 name: "ParkingSpace");
 
             migrationBuilder.DropTable(
-                name: "Member");
+                name: "Members");
 
             migrationBuilder.DropTable(
                 name: "VehicleTypes");

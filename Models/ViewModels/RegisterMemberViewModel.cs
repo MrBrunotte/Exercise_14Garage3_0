@@ -1,14 +1,15 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Garage3.Models
+namespace Garage3.Models.ViewModels
 {
-    public class Member
+    public class RegisterMemberViewModel
     {
-        public int Id { get; set; }
+        public int MemberID { get; set; }
 
         [Required, StringLength(30, ErrorMessage = "Do not enter more than 30 characters"), Display(Name = "First Name")]
         public string FirstName { get; set; }
@@ -19,21 +20,13 @@ namespace Garage3.Models
         [Required]
         [StringLength(60, ErrorMessage = "Do not enter more than 60 characters"), Display(Name = "E-mail")]
         [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}")]
+        //[Remote(action: "CheckEmail", controller: "ParkedVehicle")]
+        //[EmailAddress]
         public string Email { get; set; }
-      
+
         [Required, StringLength(30, ErrorMessage = "Do not enter more than 30 characters"), Display(Name = "Phone number")]
         public string PhoneNum { get; set; }
         [Display(Name = "Full name")]
         public string FullName => $"{FirstName} {LastName}";
-
-        //[Required]
-        //[RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$")]
-
-        //public string Password { get; set; }
-
-        //[Required]
-        //[System.ComponentModel.DataAnnotations.Compare("Password")]
-        //public string ConfirmPassword { get; set; }
-
     }
 }

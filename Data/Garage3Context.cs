@@ -32,9 +32,7 @@ namespace Garage3.Data
                     FirstName = "Kalle",
                     LastName = "Kula",
                     Email = "kalle.kula@hotail.com",
-                    PhoneNum = "070234567",
-                    Password = "plugga",
-                    ConfirmPassword = "plugga"
+                    PhoneNum = "070234567"
 
                 },
                 new Member
@@ -43,9 +41,7 @@ namespace Garage3.Data
                     FirstName = "Andreas",
                     LastName = "Andersson",
                     Email = "and.and@hotail.com",
-                    PhoneNum = "070234568",
-                    Password = "plugga2",
-                    ConfirmPassword = "plugga2"
+                    PhoneNum = "070234568"
                 },
                 new Member
                 {
@@ -53,9 +49,7 @@ namespace Garage3.Data
                     FirstName = "Zlatan",
                     LastName = "Ibrahimovic",
                     Email = "zlatan@hotail.com",
-                    PhoneNum = "070234569",
-                    Password = "plugga3",
-                    ConfirmPassword = "plugga3"
+                    PhoneNum = "070234569"
                 }
             );
 

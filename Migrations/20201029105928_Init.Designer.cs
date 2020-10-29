@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Garage3.Migrations
 {
     [DbContext(typeof(Garage3Context))]
-    [Migration("20201028154852_Members")]
-    partial class Members
+    [Migration("20201029105928_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -96,10 +96,6 @@ namespace Garage3.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ConfirmPassword")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(60)")
@@ -115,10 +111,6 @@ namespace Garage3.Migrations
                         .HasColumnType("nvarchar(30)")
                         .HasMaxLength(30);
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PhoneNum")
                         .IsRequired()
                         .HasColumnType("nvarchar(30)")
@@ -132,31 +124,25 @@ namespace Garage3.Migrations
                         new
                         {
                             Id = 1,
-                            ConfirmPassword = "plugga",
                             Email = "kalle.kula@hotail.com",
                             FirstName = "Kalle",
                             LastName = "Kula",
-                            Password = "plugga",
                             PhoneNum = "070234567"
                         },
                         new
                         {
                             Id = 2,
-                            ConfirmPassword = "plugga2",
                             Email = "and.and@hotail.com",
                             FirstName = "Andreas",
                             LastName = "Andersson",
-                            Password = "plugga2",
                             PhoneNum = "070234568"
                         },
                         new
                         {
                             Id = 3,
-                            ConfirmPassword = "plugga3",
                             Email = "zlatan@hotail.com",
                             FirstName = "Zlatan",
                             LastName = "Ibrahimovic",
-                            Password = "plugga3",
                             PhoneNum = "070234569"
                         });
                 });

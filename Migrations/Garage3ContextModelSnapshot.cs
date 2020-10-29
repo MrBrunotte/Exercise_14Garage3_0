@@ -94,10 +94,6 @@ namespace Garage3.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ConfirmPassword")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(60)")
@@ -113,10 +109,6 @@ namespace Garage3.Migrations
                         .HasColumnType("nvarchar(30)")
                         .HasMaxLength(30);
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PhoneNum")
                         .IsRequired()
                         .HasColumnType("nvarchar(30)")
@@ -130,31 +122,25 @@ namespace Garage3.Migrations
                         new
                         {
                             Id = 1,
-                            ConfirmPassword = "plugga",
                             Email = "kalle.kula@hotail.com",
                             FirstName = "Kalle",
                             LastName = "Kula",
-                            Password = "plugga",
                             PhoneNum = "070234567"
                         },
                         new
                         {
                             Id = 2,
-                            ConfirmPassword = "plugga2",
                             Email = "and.and@hotail.com",
                             FirstName = "Andreas",
                             LastName = "Andersson",
-                            Password = "plugga2",
                             PhoneNum = "070234568"
                         },
                         new
                         {
                             Id = 3,
-                            ConfirmPassword = "plugga3",
                             Email = "zlatan@hotail.com",
                             FirstName = "Zlatan",
                             LastName = "Ibrahimovic",
-                            Password = "plugga3",
                             PhoneNum = "070234569"
                         });
                 });

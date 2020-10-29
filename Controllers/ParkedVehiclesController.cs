@@ -10,6 +10,7 @@ using Garage3.Models;
 using Garage3.Models.ViewModels;
 using System.Data;
 
+
 namespace Garage3.Controllers
 {
     public class ParkedVehiclesController : Controller
@@ -27,36 +28,34 @@ namespace Garage3.Controllers
         // Added by Stefan search functionality
         public async Task<IActionResult> Index()
         {
-            var vehicles = await _context.ParkedVehicle.ToListAsync();
+            var vehicles = await _context.ParkedVehicle.Include(p => p.VehicleType).ToListAsync();
 
             var model = new VehicleTypeViewModel
             {
                 VehicleList = vehicles,
                 VehicleTypes = await TypeAsync()
             };
-            ViewData["VehicleTypeID"] = new SelectList(_context.Set<VehicleTypes>(), "ID", "VehicleType");
             return View(model);
         }
 
         private async Task<IEnumerable<SelectListItem>> TypeAsync()
         {
-            return await _context.ParkedVehicle
-                         .Select(m => m.VehicleType)
-                         // Only distinct type, no multiples
-                         .Distinct()
-                         .Select(m => new SelectListItem
-                         {
-                             Text = m.ToString(),
-                             Value = m.ToString()
-                         })
-                         .ToListAsync();
+            //Soile Changed
+            return await _context.VehicleTypes
+                        .Select(m => new SelectListItem
+                        {
+                            Text = m.VehicleType,
+                            Value = m.ID.ToString()
+                        })
+                        .ToListAsync();
+        
         }
 
         public async Task<IActionResult> Filter(VehicleTypeViewModel viewModel)
         {
             var vehicles = string.IsNullOrWhiteSpace(viewModel.SearchString) ?
-                _context.ParkedVehicle :
-                _context.ParkedVehicle.Where(m => m.RegNum.Contains(viewModel.SearchString));
+                _context.ParkedVehicle.Include(p => p.VehicleType) :
+                _context.ParkedVehicle.Include(p => p.VehicleType).Where(m => m.RegNum.Contains(viewModel.SearchString));
 
             vehicles = viewModel.VehicleTypes == null ?
                 vehicles :
@@ -144,6 +143,59 @@ namespace Garage3.Controllers
         }
 
 
+        //Soile
+        public IActionResult ValidateRegNum(string regNum)
+        {
+            if (_context.ParkedVehicle.Any(m => m.RegNum == regNum))
+            {
+                return Json($"{regNum} is in use");
+            }
+            return Json(true);
+        }
+        public IActionResult CheckEmail(string email)
+        {
+            if (_context.Members.Any(m => m.Email == email))
+            {
+                return Json($"{email} is in use");
+            }
+            return Json(true);
+        }
+        //Soile
+        public IActionResult RegisterMember()
+        {
+            return View();
+        }
+
+        //Soile
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegisterMember(RegisterMemberViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+            
+                var member = new Member
+                {
+                    FirstName = viewModel.FirstName,
+                    LastName = viewModel.LastName,
+                    Email = viewModel.Email,
+                    PhoneNum = viewModel.PhoneNum
+                };
+                if (!EmailExists(viewModel.Email))
+                {
+                    _context.Add(member);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    return Json($"{viewModel.Email} is in use");
+                }
+               
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(viewModel);
+        }
         //Soile
         public IActionResult CheckInVehicle()
         {
@@ -419,9 +471,9 @@ namespace Garage3.Controllers
             return _context.ParkedVehicle.Any(e => e.VehicleType.VehicleType == vType);
         }
 
-        private bool MemberExists(int memberId)
+        private bool EmailExists(string email)
         {
-            return _context.ParkedVehicle.Any(e => e.MemberID == memberId);
+            return _context.Members.Any(e => e.Email == email);
         }
     }
 }
