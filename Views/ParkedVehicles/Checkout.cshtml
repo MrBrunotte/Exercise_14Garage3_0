@@ -30,10 +30,10 @@
         <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Cost)</dt>
         <dd class="col-sm-10">@Html.DisplayFor(model => model.Cost)</dd>
     </dl>
-    
+
     <form asp-action="Checkout">
         <input type="hidden" asp-for="ID" />
-        <input type="submit" value="Checkout" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Checkout" class="viewBtn"" /> |
+        <a class="viewBtn" asp-action="Index">Back to List</a>
     </form>
 </div>
