@@ -133,7 +133,6 @@ namespace Garage3.Controllers
 
                 model.Add(new OverViewViewModel
                 {
-                    ID = vehicle.ID,
                     Member = vehicle.Member,
                     VehicleType = vehicle.VehicleType,
                     RegNum = vehicle.RegNum,
