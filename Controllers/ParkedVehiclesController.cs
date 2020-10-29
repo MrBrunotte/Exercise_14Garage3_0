@@ -114,7 +114,11 @@ namespace Garage3.Controllers
         public async Task<IActionResult> OverView()
         {
 
-            var vehicles = await _context.ParkedVehicle.Include(p => p.VehicleType).ToListAsync();
+            var vehicles = await _context.ParkedVehicle
+                .Include(p => p.VehicleType)
+                .Include(p => p.Member)
+                .ToListAsync();
+
             if (vehicles == null)
             {
                 return NotFound();
@@ -131,6 +135,7 @@ namespace Garage3.Controllers
 
                 model.Add(new OverViewViewModel
                 {
+                    Member = vehicle.Member,
                     VehicleType = vehicle.VehicleType,
                     RegNum = vehicle.RegNum,
                     ArrivalTime = arrival,
