@@ -27,17 +27,17 @@ namespace Garage3.Controllers
         // Added by Stefan search functionality
         public async Task<IActionResult> Index()
         {
-            var vehicles = await _context.ParkedVehicle.ToListAsync();
+            var vehicles = await _context.ParkedVehicle.Include(p => p.VehicleType).ToListAsync();
 
             var model = new VehicleTypeViewModel
             {
                 VehicleList = vehicles,
-                VehicleTypes = await TypeAsync()
+                VehicleTypes = await GetTypeAsync()
             };
             return View(model);
         }
 
-        private async Task<IEnumerable<SelectListItem>> TypeAsync()
+        private async Task<IEnumerable<SelectListItem>> GetTypeAsync()
         {
             return await _context.ParkedVehicle
                          .Select(m => m.VehicleType)
@@ -53,8 +53,8 @@ namespace Garage3.Controllers
         public async Task<IActionResult> Filter(VehicleTypeViewModel viewModel)
         {
             var vehicles = string.IsNullOrWhiteSpace(viewModel.SearchString) ?
-                _context.ParkedVehicle :
-                _context.ParkedVehicle.Where(m => m.RegNum.Contains(viewModel.SearchString));
+                _context.ParkedVehicle.Include(p => p.VehicleType) :
+                _context.ParkedVehicle.Include(p => p.VehicleType).Where(m => m.RegNum.Contains(viewModel.SearchString));
 
             vehicles = viewModel.VehicleTypes == null ?
                 vehicles :
@@ -63,7 +63,7 @@ namespace Garage3.Controllers
             var model = new VehicleTypeViewModel
             {
                 VehicleList = await vehicles.ToListAsync(),
-                VehicleTypes = await TypeAsync()
+                VehicleTypes = await GetTypeAsync()
             };
 
             return View(nameof(Index), model);
