@@ -138,7 +138,8 @@ namespace Garage3.Controllers
                     VehicleType = vehicle.VehicleType,
                     RegNum = vehicle.RegNum,
                     ArrivalTime = arrival,
-                    Period = nowTime - arrival
+                    Period = nowTime - arrival,
+                    ID = vehicle.ID
                 });
             }
 
