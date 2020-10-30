@@ -31,21 +31,6 @@ namespace Garage3.Models.ViewModels
         [Display(Name = "Phone number")]
         public string PhoneNum { get; set; }
        
-
-
-
-        //[Display(Name = "Type of Vehicle")]
-        //public VehicleTypes VehicleType { get; set; }
-
-        //[Display(Name = "Make of Vehicle")]
-        //public string Make { get; set; }
-
-        //[Display(Name = "Model of Vehicle")]
-        //public string Model { get; set; }
-
-        //[Display(Name = "Registration number")]
-        //public string RegNum { get; set; }
-
         [Display(Name = "Number of vehicles")]
         public int NumOfVehicles { get; set; }
     }

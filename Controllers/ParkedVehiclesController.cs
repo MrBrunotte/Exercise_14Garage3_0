@@ -198,7 +198,35 @@ namespace Garage3.Controllers
 
             return View(model);
         }
-        
+
+        // GET: ParkedVehicles/MemberDetails/
+        public async Task<IActionResult> MemberDetails(int? id, MemberDetailsViewModel viewModel)
+        {
+
+            var parkedVehicle = await _context.ParkedVehicle
+                .Include(p => p.Member)
+                .Include(p => p.VehicleType)
+                .Where(m => m.MemberID == id)
+                .ToListAsync();
+
+            var model = new List<MemberDetailsViewModel>();
+            foreach (var vehicle in parkedVehicle)
+            {
+                model.Add(new MemberDetailsViewModel
+                { 
+                    Member = vehicle.Member,
+                    VehicleType = vehicle.VehicleType,
+                    RegNum = vehicle.RegNum,
+                    Make = vehicle.Make,
+                    Model = vehicle.Model
+
+                });
+                
+            }
+            return View(model);
+
+        }
+
         //Soile
         public IActionResult ValidateRegNum(string regNum)
         {

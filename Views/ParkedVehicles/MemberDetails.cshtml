@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Garage3.Models.ViewModels.MemberDetailsViewModel>
+
+ @{ ViewData["Title"] = "MemberDetails"; }
+
+<h1> model.Member.FullName</h1>
+
+<div>
+
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model)
+        </dd>
+    </dl>
+</div>
+<dd class="col-sm-10">
+    @foreach(var item in Model)
+    {
+            @item.Member.FullName<br />
+    }
+</dd>
+<div>
+   
+    <a asp-action="Index">Back to List</a>
+</div>
