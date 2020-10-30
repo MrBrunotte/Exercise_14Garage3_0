@@ -266,6 +266,22 @@ namespace Garage3.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                // Torbjörn
+                // Check if enough parking spaces for vehicle
+                var size = _context.VehicleTypes
+                    .Where(v => v.ID == viewModel.VehicleTypeID)
+                    .Select(v => v.FillsNumberOfSpaces)
+                    .FirstOrDefault();
+                
+                if (!CheckParkingSpaces(size))
+                {
+                    ModelState.AddModelError("RegNum", $"Not enough free parking spaces. {viewModel.RegNum} requires {size} parking spaces.");
+                    return View();
+                }
+                  
+                // end parking spaces check
+
                 var vehicles = new ParkedVehicle
                 {
                     MemberID = viewModel.MemberID,
@@ -590,26 +606,19 @@ namespace Garage3.Controllers
 
         public async Task<IActionResult> ParkingSpaceOverview()
         {          
-            var spaces = await _context.ParkingSpace
+            var model = await _context.ParkingSpace
                 .Include(s => s.Parking)
                 .ThenInclude(s => s.ParkedVehicle)
-                .ToListAsync();
-
-            var model = new List<ParkingSpaceOverviewViewModel>();
-
-            foreach (var space in spaces)
-            {
-                model.Add(new ParkingSpaceOverviewViewModel
+                .Select(p => new ParkingSpaceOverviewViewModel
                 {
-                    ID = space.ID,
-                    ParkingSpaceNum = space.ParkingSpaceNum,
-                    Available = space.Available,
-                    RegNum = space.Parking.Select(p => p.ParkedVehicle.RegNum).FirstOrDefault(),
-                    ParkedVehicleId = space.Parking.Select(p => p.ParkedVehicle.ID).FirstOrDefault()
-                });
-            }
-
-           
+                    ID = p.ID,
+                    ParkingSpaceNum = p.ParkingSpaceNum,
+                    Available = p.Available,
+                    RegNum = p.Parking.Select(p => p.ParkedVehicle.RegNum).FirstOrDefault(),
+                    ParkedVehicleId = p.Parking.Select(p => p.ParkedVehicle.ID).FirstOrDefault()
+                })
+                .ToListAsync();
+          
             return View(model);
         }
 
