@@ -13,7 +13,7 @@ namespace Garage3.Models.ViewModels
         public int ParkingSpaceNum { get; set; }
         public bool Available { get; set; }
         [Display(Name = "Registration number")]
-        public string? RegNum { get; set; }
+        public string RegNum { get; set; }
         public int? ParkedVehicleId { get; set; }
     }
 }

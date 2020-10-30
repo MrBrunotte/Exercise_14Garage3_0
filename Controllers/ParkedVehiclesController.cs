@@ -149,17 +149,6 @@ namespace Garage3.Controllers
         //Soile
         public async Task<IActionResult> MemberOverView()
         {
-
-            //var vehicles = await _context.ParkedVehicle
-            //    .Include(p => p.Member)
-            //    //.Include(p => p.VehicleType)
-            //    .ToListAsync();
-
-            //if (vehicles == null)
-            //{
-            //    return NotFound();
-            //}
-
             var members = await _context.Members
                .ToListAsync();
 
@@ -178,29 +167,12 @@ namespace Garage3.Controllers
                 });
             }
 
-            //foreach (var vehicle in vehicles)
-            //{
-
-            //    var arrival = vehicle.ArrivalTime;
-            //    var nowTime = DateTime.Now;
-
-            //    model.Add(new MemberOverViewViewModel
-            //    {
-            //        Member = vehicle.Member,
-            //        VehicleType = vehicle.VehicleType,
-            //        Make = vehicle.Make,
-            //        Model = vehicle.Model,
-            //        RegNum = vehicle.RegNum,
-            //        NumOfVehicles = vehicle.RegNum.Count(),
-            //        ID = vehicle.ID
-            //    });
-            //}
 
             return View(model);
         }
 
         // GET: ParkedVehicles/MemberDetails/
-        public async Task<IActionResult> MemberDetails(int? id, MemberDetailsViewModel viewModel)
+        public async Task<IActionResult> MemberDetails(int? id)
         {
 
             var parkedVehicle = await _context.ParkedVehicle
@@ -208,22 +180,49 @@ namespace Garage3.Controllers
                 .Include(p => p.VehicleType)
                 .Where(m => m.MemberID == id)
                 .ToListAsync();
+            //var model = new List<MemberDetailsViewModel>();
+            //var member = await _context.Members
+            //   .Where(m => m.Id == id)
+            //   .ToListAsync();
 
-            var model = new List<MemberDetailsViewModel>();
-            foreach (var vehicle in parkedVehicle)
+            //var memberDetails = new MemberDetailsViewModel
+            //{
+
+            //};
+
+
+
+            List<MemberDetailsViewModel> newList = new List<MemberDetailsViewModel>();
+            foreach (var item in parkedVehicle)
             {
-                model.Add(new MemberDetailsViewModel
-                { 
-                    Member = vehicle.Member,
-                    VehicleType = vehicle.VehicleType,
-                    RegNum = vehicle.RegNum,
-                    Make = vehicle.Make,
-                    Model = vehicle.Model
-
-                });
-                
+                MemberDetailsViewModel listItem = new MemberDetailsViewModel();
+                listItem.ID = item.ID;
+                listItem.Member = item.Member;
+                listItem.VehicleType = item.VehicleType;
+                listItem.RegNum = item.RegNum;
+                listItem.Make = item.Make;
+                listItem.Model = item.Model;
+                newList.Add(listItem);
             }
-            return View(model);
+
+            return View(newList);
+
+
+
+            //foreach (var vehicle in parkedVehicle)
+            //{
+            //    model.Add(new MemberDetailsViewModel
+            //    { 
+            //        Member = vehicle.Member,
+            //        VehicleType = vehicle.VehicleType,
+            //        RegNum = vehicle.RegNum,
+            //        Make = vehicle.Make,
+            //        Model = vehicle.Model
+
+            //    });
+
+            //}
+            //return View(model);
 
         }
 
@@ -257,7 +256,7 @@ namespace Garage3.Controllers
         {
             if (ModelState.IsValid)
             {
-            
+
                 var member = new Member
                 {
                     FirstName = viewModel.FirstName,
@@ -274,7 +273,7 @@ namespace Garage3.Controllers
                 {
                     return Json($"{viewModel.Email} is in use");
                 }
-               
+
                 return RedirectToAction(nameof(Index));
             }
 
@@ -290,7 +289,7 @@ namespace Garage3.Controllers
         //Soile
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CheckInVehicle( CheckInVehicleViewModel viewModel)
+        public async Task<IActionResult> CheckInVehicle(CheckInVehicleViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
@@ -309,7 +308,7 @@ namespace Garage3.Controllers
                     if (!RegNumExists(viewModel.RegNum))
                     {
                         vehicles.ArrivalTime = DateTime.Now;
-                       
+
                         _context.Add(vehicles);
                         await _context.SaveChangesAsync();
                     }
@@ -333,13 +332,13 @@ namespace Garage3.Controllers
                     }
                 }
                 //return RedirectToAction(nameof(Feedback), new { RegNum = parkedVehicle.RegNum, Message = "Has been checked in" });
-                 return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index));
             }
-           
+
             return View(viewModel);
         }
 
-        
+
         //Soile
         public IActionResult AddNewVehicleType()
         {
@@ -524,7 +523,7 @@ namespace Garage3.Controllers
             var checkout = DateTime.Now;
 
             var checkoutView = new ParkedVehicleCheckoutViewModel
-            {              
+            {
                 Member = parkedVehicle.Member,
                 RegNum = parkedVehicle.RegNum,
                 ArrivalTime = arrival,
@@ -561,11 +560,11 @@ namespace Garage3.Controllers
             // Update ParkingSpace (set Available = True)
             parkedVehicle.Parking.Select(s => s.ParkingSpace)
                 .ToList()
-                .ForEach(p => p.Available = true);         
+                .ForEach(p => p.Available = true);
 
-           _context.ParkedVehicle.Remove(parkedVehicle);
-           await _context.SaveChangesAsync();
-           return RedirectToAction(nameof(Receipt));
+            _context.ParkedVehicle.Remove(parkedVehicle);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Receipt));
         }
 
         public IActionResult Receipt()
@@ -617,7 +616,7 @@ namespace Garage3.Controllers
 
 
         public async Task<IActionResult> ParkingSpaceOverview()
-        {          
+        {
             var spaces = await _context.ParkingSpace
                 .Include(s => s.Parking)
                 .ThenInclude(s => s.ParkedVehicle)
@@ -637,7 +636,7 @@ namespace Garage3.Controllers
                 });
             }
 
-           
+
             return View(model);
         }
 
