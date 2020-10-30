@@ -84,6 +84,48 @@ namespace Garage3.Migrations
                             ID = 3,
                             Available = true,
                             ParkingSpaceNum = 3
+                        },
+                        new
+                        {
+                            ID = 4,
+                            Available = true,
+                            ParkingSpaceNum = 4
+                        },
+                        new
+                        {
+                            ID = 5,
+                            Available = true,
+                            ParkingSpaceNum = 5
+                        },
+                        new
+                        {
+                            ID = 6,
+                            Available = true,
+                            ParkingSpaceNum = 6
+                        },
+                        new
+                        {
+                            ID = 7,
+                            Available = true,
+                            ParkingSpaceNum = 7
+                        },
+                        new
+                        {
+                            ID = 8,
+                            Available = true,
+                            ParkingSpaceNum = 8
+                        },
+                        new
+                        {
+                            ID = 9,
+                            Available = true,
+                            ParkingSpaceNum = 9
+                        },
+                        new
+                        {
+                            ID = 10,
+                            Available = true,
+                            ParkingSpaceNum = 10
                         });
                 });
 

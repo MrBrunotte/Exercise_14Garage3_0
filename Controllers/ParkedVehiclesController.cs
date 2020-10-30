@@ -9,7 +9,7 @@ using Garage3.Data;
 using Garage3.Models;
 using Garage3.Models.ViewModels;
 using System.Data;
-
+using System.Xml.Schema;
 
 namespace Garage3.Controllers
 {
@@ -611,6 +611,58 @@ namespace Garage3.Controllers
         private bool EmailExists(string email)
         {
             return _context.Members.Any(e => e.Email == email);
+        }
+
+
+
+
+        public async Task<IActionResult> ParkingSpaceOverview()
+        {          
+            var spaces = await _context.ParkingSpace
+                .Include(s => s.Parking)
+                .ThenInclude(s => s.ParkedVehicle)
+                .ToListAsync();
+
+            var model = new List<ParkingSpaceOverviewViewModel>();
+
+            foreach (var space in spaces)
+            {
+                model.Add(new ParkingSpaceOverviewViewModel
+                {
+                    ID = space.ID,
+                    ParkingSpaceNum = space.ParkingSpaceNum,
+                    Available = space.Available,
+                    RegNum = space.Parking.Select(p => p.ParkedVehicle.RegNum).FirstOrDefault(),
+                    ParkedVehicleId = space.Parking.Select(p => p.ParkedVehicle.ID).FirstOrDefault()
+                });
+            }
+
+           
+            return View(model);
+        }
+
+
+        // Check if there are parking spaces available
+        // If more than one, they have to be adjacent to each other
+        private bool CheckParkingSpaces(int numberOfSpaces)
+        {
+            var availableSpaces = _context.ParkingSpace
+                .Where(s => s.Available == true)
+                .OrderBy(s => s.ParkingSpaceNum)
+                .ToList();
+
+            var adjacentFound = false;
+            // List contains free parking spaces sorted on ParkingSpace number.            
+            for (var i = 0; i < availableSpaces.Count - numberOfSpaces + 1; i++)
+            {
+                if (availableSpaces[i + numberOfSpaces - 1].ParkingSpaceNum == availableSpaces[i].ParkingSpaceNum + numberOfSpaces - 1)
+                {
+                    // availableSpaces[i] and the following "numberOfSpaces - 1" spaces are available
+                    adjacentFound = true;
+                    break;
+                }
+            }
+            return adjacentFound;
         }
     }
 }
