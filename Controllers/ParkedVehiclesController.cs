@@ -10,6 +10,7 @@ using Garage3.Models;
 using Garage3.Models.ViewModels;
 using System.Data;
 using System.Xml.Schema;
+using Garage3.Models.Entities;
 
 namespace Garage3.Controllers
 {
@@ -293,6 +294,22 @@ namespace Garage3.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                // Torbjörn
+                // Check if enough parking spaces for vehicle
+
+                var size = _context.VehicleTypes
+                    .Where(v => v.ID == viewModel.VehicleTypeID)
+                    .Select(v => v.FillsNumberOfSpaces)
+                    .FirstOrDefault();
+                
+                if (!CheckParkingSpaces(size))
+                {
+                    ModelState.AddModelError("RegNum", $"Not enough free parking spaces. {viewModel.RegNum} requires {size} parking spaces.");
+                    return View();
+                }
+                
+                // Park vehicle
                 var vehicles = new ParkedVehicle
                 {
                     MemberID = viewModel.MemberID,
@@ -303,6 +320,32 @@ namespace Garage3.Controllers
                     Model = viewModel.Model
                 };
 
+                // Get available parking spaces
+                var availableSpaces = _context.ParkingSpace
+                    .Include(s => s.Parking)
+                    .Where(s => s.Available == true)
+                    .OrderBy(s => s.ParkingSpaceNum)
+                    .ToList();
+
+                var allocateSpaces = new List<Parking>();
+                // Loop through available parkingspaces to find where vehicle can park (checking for adjacent places
+                // for large vehicles)
+
+                // TODO: Same test as above, could perhaps do it one time only
+                for (var i = 0; i < availableSpaces.Count - size + 1; i++)
+                {
+                    if (availableSpaces[i + size - 1].ParkingSpaceNum == availableSpaces[i].ParkingSpaceNum + size - 1)
+                    {
+                        // availableSpaces[i] and the following "numberOfSpaces - 1" spaces are available
+                        for (var a = i; a < size; a++)
+                        {
+                            availableSpaces[a].Available = false;
+                            allocateSpaces.Add(new Parking { ParkedVehicle = vehicles, ParkingSpace = availableSpaces[a] });
+                        }
+                        break;
+                    }
+                }
+
                 try
                 {
                     if (!RegNumExists(viewModel.RegNum))
@@ -310,6 +353,7 @@ namespace Garage3.Controllers
                         vehicles.ArrivalTime = DateTime.Now;
 
                         _context.Add(vehicles);
+                        _context.Parking.AddRange(allocateSpaces);  
                         await _context.SaveChangesAsync();
                     }
                     else
@@ -331,6 +375,7 @@ namespace Garage3.Controllers
                         throw;
                     }
                 }
+
                 //return RedirectToAction(nameof(Feedback), new { RegNum = parkedVehicle.RegNum, Message = "Has been checked in" });
                 return RedirectToAction(nameof(Index));
             }
@@ -616,27 +661,20 @@ namespace Garage3.Controllers
 
 
         public async Task<IActionResult> ParkingSpaceOverview()
-        {
-            var spaces = await _context.ParkingSpace
+        {          
+            var model = await _context.ParkingSpace
                 .Include(s => s.Parking)
                 .ThenInclude(s => s.ParkedVehicle)
-                .ToListAsync();
-
-            var model = new List<ParkingSpaceOverviewViewModel>();
-
-            foreach (var space in spaces)
-            {
-                model.Add(new ParkingSpaceOverviewViewModel
+                .Select(p => new ParkingSpaceOverviewViewModel
                 {
-                    ID = space.ID,
-                    ParkingSpaceNum = space.ParkingSpaceNum,
-                    Available = space.Available,
-                    RegNum = space.Parking.Select(p => p.ParkedVehicle.RegNum).FirstOrDefault(),
-                    ParkedVehicleId = space.Parking.Select(p => p.ParkedVehicle.ID).FirstOrDefault()
-                });
-            }
-
-
+                    ID = p.ID,
+                    ParkingSpaceNum = p.ParkingSpaceNum,
+                    Available = p.Available,
+                    RegNum = p.Parking.Select(p => p.ParkedVehicle.RegNum).FirstOrDefault(),
+                    ParkedVehicleId = p.Parking.Select(p => p.ParkedVehicle.ID).FirstOrDefault()
+                })
+                .ToListAsync();
+          
             return View(model);
         }
 
