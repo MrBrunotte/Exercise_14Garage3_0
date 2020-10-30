@@ -585,6 +585,35 @@ namespace Garage3.Controllers
             return _context.Members.Any(e => e.Email == email);
         }
 
+
+
+
+        public async Task<IActionResult> ParkingSpaceOverview()
+        {          
+            var spaces = await _context.ParkingSpace
+                .Include(s => s.Parking)
+                .ThenInclude(s => s.ParkedVehicle)
+                .ToListAsync();
+
+            var model = new List<ParkingSpaceOverviewViewModel>();
+
+            foreach (var space in spaces)
+            {
+                model.Add(new ParkingSpaceOverviewViewModel
+                {
+                    ID = space.ID,
+                    ParkingSpaceNum = space.ParkingSpaceNum,
+                    Available = space.Available,
+                    RegNum = space.Parking.Select(p => p.ParkedVehicle.RegNum).FirstOrDefault(),
+                    ParkedVehicleId = space.Parking.Select(p => p.ParkedVehicle.ID).FirstOrDefault()
+                });
+            }
+
+           
+            return View(model);
+        }
+
+
         // Check if there are parking spaces available
         // If more than one, they have to be adjacent to each other
         private bool CheckParkingSpaces(int numberOfSpaces)
@@ -600,6 +629,7 @@ namespace Garage3.Controllers
             {
                 if (availableSpaces[i + numberOfSpaces - 1].ParkingSpaceNum == availableSpaces[i].ParkingSpaceNum + numberOfSpaces - 1)
                 {
+                    // availableSpaces[i] and the following "numberOfSpaces - 1" spaces are available
                     adjacentFound = true;
                     break;
                 }
