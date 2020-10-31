@@ -20,16 +20,24 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="ParkedVehicles" asp-action="Index">Parked Vehicle</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ParkedVehicles" asp-action="OverView">OverView</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="ParkedVehicles" asp-action="OverView">Vehicle OverView</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ParkedVehicles" asp-action="Index">Parked Vehicles</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ParkedVehicles" asp-action="CheckInVehicle">Park a Vehicle</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ParkedVehicles" asp-action="AddNewVehicleType">New Vehicle Type</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="ParkedVehicles" asp-action="RegisterMember">Register Member</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="ParkedVehicles" asp-action="AddNewVehicleType">New Vehicle Type</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ParkedVehicles" asp-action="SearchMember">Search Member
+                                <img src="~/Images/search.png" class="navIcon" alt="Garage icon" /></a>
+
                         </li>
                     </ul>
                 </div>
