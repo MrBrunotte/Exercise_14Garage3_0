@@ -89,6 +89,7 @@ namespace Garage3.Controllers
             {
                 MemberList = await member.ToListAsync(),
             };
+
             return View(nameof(Index2), model);
         }
 
