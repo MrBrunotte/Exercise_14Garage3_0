@@ -4,15 +4,15 @@
     ViewData["Title"] = "Search Member";
 }
 
-<h1>Search Member</h1>
+<h1>Search Member by Name</h1>
 
 <form asp-action="FilterMembers">
     <div class="input-group mb-3">
-        <input type="text" class="form-control" name="SearchString" placeholder="Search Member Name..." />
+        <input type="text" class="form-control" name="SearchString" placeholder="Search Member by Name..." />
 
         <div class="input-group-append ml-1">
             <button type="submit" class="viewBtn"><i class="fa fa-search">&emsp;Search</i></button>
         </div>
     </div>
 </form>
-<!--<partial name="MemberListPartial" model="@Model.MemberList" />-->
+<partial name="MemberListPartial" model="@Model.MemberList" />

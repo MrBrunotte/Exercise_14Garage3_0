@@ -9,7 +9,7 @@ using Garage3.Data;
 using Garage3.Models;
 using Garage3.Models.ViewModels;
 using System.Data;
-
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Garage3.Controllers
 {
@@ -66,29 +66,30 @@ namespace Garage3.Controllers
 
             return View(nameof(Index), model);
         }
+
         // Member search
         public async Task<IActionResult> Index2()
         {
-            var members = await _context.Members.Include(p => p.FullName).ToListAsync();
+            var members = await _context.Members.ToListAsync();
 
             var memberModel = new MemberViewModel
             {
                 MemberList = members
             };
+
             return View(memberModel);
         }
-        public async Task<IActionResult> FilterMembers(MemberViewModel viewMemberModel)
+        public async Task<IActionResult> FilterMembers(string searchString)
         {
-            var members = string.IsNullOrWhiteSpace(viewMemberModel.SearchString) ?
-                _context.Members.Include(m => m.FullName) :
-                _context.Members.Include(m => m.FullName).Where(m => m.FullName.Contains(viewMemberModel.SearchString));
+            var member = string.IsNullOrWhiteSpace(searchString) ?
+                _context.Members :
+                _context.Members.Where(m => m.FirstName.Contains(searchString) || m.LastName.Contains(searchString));
 
-            var memberModel = new MemberViewModel
+            var model = new MemberViewModel
             {
-                MemberList = await members.ToListAsync()
+                MemberList = await member.ToListAsync(),
             };
-
-            return View(nameof(Index2), memberModel);
+            return View(nameof(Index2), model);
         }
 
         // STEFAN END

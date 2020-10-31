@@ -1,6 +1,5 @@
 ﻿@model IEnumerable<Garage3.Models.Member>
 
-
 <table class="table">
     <thead>
         <tr>
@@ -17,20 +16,19 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var member in Model)
+        @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => member.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => member.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => member.PhoneNum)
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNum)
+                </td>
+            </tr>
         }
     </tbody>
 </table>
-
