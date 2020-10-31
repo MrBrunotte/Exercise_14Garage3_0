@@ -37,7 +37,6 @@ namespace Garage3.Controllers
             };
             return View(model);
         }
-
         private async Task<IEnumerable<SelectListItem>> GetTypeAsync()
         {
             return await _context.VehicleTypes
@@ -48,7 +47,7 @@ namespace Garage3.Controllers
                          })
                          .ToListAsync();
         }
-
+        // Filter for vehicle search and type
         public async Task<IActionResult> Filter(VehicleTypeViewModel viewModel)
         {
             var vehicles = string.IsNullOrWhiteSpace(viewModel.SearchString) ?
@@ -66,6 +65,30 @@ namespace Garage3.Controllers
             };
 
             return View(nameof(Index), model);
+        }
+        // Member search
+        public async Task<IActionResult> Index2()
+        {
+            var members = await _context.Members.Include(p => p.FullName).ToListAsync();
+
+            var memberModel = new MemberViewModel
+            {
+                MemberList = members
+            };
+            return View(memberModel);
+        }
+        public async Task<IActionResult> FilterMembers(MemberViewModel viewMemberModel)
+        {
+            var members = string.IsNullOrWhiteSpace(viewMemberModel.SearchString) ?
+                _context.Members.Include(m => m.FullName) :
+                _context.Members.Include(m => m.FullName).Where(m => m.FullName.Contains(viewMemberModel.SearchString));
+
+            var memberModel = new MemberViewModel
+            {
+                MemberList = await members.ToListAsync()
+            };
+
+            return View(nameof(Index2), memberModel);
         }
 
         // STEFAN END
@@ -178,7 +201,7 @@ namespace Garage3.Controllers
         {
             if (ModelState.IsValid)
             {
-            
+
                 var member = new Member
                 {
                     FirstName = viewModel.FirstName,
@@ -195,7 +218,7 @@ namespace Garage3.Controllers
                 {
                     return Json($"{viewModel.Email} is in use");
                 }
-               
+
                 return RedirectToAction(nameof(Index));
             }
 
@@ -230,7 +253,7 @@ namespace Garage3.Controllers
                     if (!RegNumExists(viewModel.RegNum))
                     {
                         vehicles.ArrivalTime = DateTime.Now;
-                       
+
                         _context.Add(vehicles);
                         await _context.SaveChangesAsync();
                     }
@@ -256,11 +279,11 @@ namespace Garage3.Controllers
                 //return RedirectToAction(nameof(Feedback), new { RegNum = parkedVehicle.RegNum, Message = "Has been checked in" });
                  return RedirectToAction(nameof(Index));
             }
-           
+
             return View(viewModel);
         }
 
-        
+
         //Soile
         public IActionResult AddNewVehicleType()
         {
@@ -445,7 +468,7 @@ namespace Garage3.Controllers
             var checkout = DateTime.Now;
 
             var checkoutView = new ParkedVehicleCheckoutViewModel
-            {              
+            {
                 Member = parkedVehicle.Member,
                 RegNum = parkedVehicle.RegNum,
                 ArrivalTime = arrival,
@@ -472,7 +495,7 @@ namespace Garage3.Controllers
                 .ThenInclude(p => p.ParkingSpace)
                 .FirstOrDefaultAsync(m => m.ID == id);
 
-            // To be used in Receipt         
+            // To be used in Receipt
             TempData["regnum"] = parkedVehicle.RegNum;
             TempData["arrival"] = parkedVehicle.ArrivalTime;
             TempData["checkout"] = DateTime.Now;
@@ -482,7 +505,7 @@ namespace Garage3.Controllers
             // Update ParkingSpace (set Available = True)
             parkedVehicle.Parking.Select(s => s.ParkingSpace)
                 .ToList()
-                .ForEach(p => p.Available = true);         
+                .ForEach(p => p.Available = true);
 
            _context.ParkedVehicle.Remove(parkedVehicle);
            await _context.SaveChangesAsync();
