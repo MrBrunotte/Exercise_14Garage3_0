@@ -113,9 +113,9 @@ namespace Garage3.Migrations
                 columns: new[] { "Id", "Email", "FirstName", "LastName", "PhoneNum" },
                 values: new object[,]
                 {
-                    { 1, "kalle.kula@hotail.com", "Kalle", "Kula", "070234567" },
+                    { 3, "zlatan@hotail.com", "Zlatan", "Ibrahimovic", "070234569" },
                     { 2, "and.and@hotail.com", "Andreas", "Andersson", "070234568" },
-                    { 3, "zlatan@hotail.com", "Zlatan", "Ibrahimovic", "070234569" }
+                    { 1, "kalle.kula@hotail.com", "Kalle", "Kula", "070234567" }
                 });
 
             migrationBuilder.InsertData(
@@ -124,8 +124,15 @@ namespace Garage3.Migrations
                 values: new object[,]
                 {
                     { 1, false, 1 },
+                    { 10, true, 10 },
+                    { 8, true, 8 },
+                    { 9, true, 9 },
+                    { 6, true, 6 },
+                    { 5, true, 5 },
+                    { 4, true, 4 },
+                    { 3, true, 3 },
                     { 2, true, 2 },
-                    { 3, true, 3 }
+                    { 7, true, 7 }
                 });
 
             migrationBuilder.InsertData(
@@ -133,9 +140,9 @@ namespace Garage3.Migrations
                 columns: new[] { "ID", "FillsNumberOfSpaces", "VehicleType" },
                 values: new object[,]
                 {
+                    { 3, 1, "Sportscar" },
                     { 1, 3, "Bus" },
                     { 2, 1, "Car" },
-                    { 3, 1, "Sportscar" },
                     { 4, 1, "Motorcycle" }
                 });
 

@@ -4,7 +4,7 @@
     ViewData["Title"] = "OverView";
 }
 
-<h1>OverView</h1>
+<h1>Vehicle overview</h1>
 
 <p>
     <a class="viewBtn" asp-action="CheckInVehicle">Park Your Vehicle</a>
@@ -14,6 +14,9 @@
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Member)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNum)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.VehicleType)
@@ -35,6 +38,9 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Member.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Member.PhoneNum)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.VehicleType.VehicleType)

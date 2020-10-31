@@ -15,6 +15,9 @@ namespace Garage3.Models.ViewModels
         [Display(Name = "Owner")]
         public Member Member { get; set; }
 
+        [Display(Name = "Phone mumber")]
+        public string PhoneNum { get; set; }
+
         [Display(Name = "Registration number")]
         public string RegNum { get; set; }
 

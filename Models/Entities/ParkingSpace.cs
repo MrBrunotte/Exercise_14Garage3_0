@@ -14,5 +14,8 @@ namespace Garage3.Models.Entities
 
         [Required, Display(Name = "Parkingspace number")]
         public int ParkingSpaceNum { get; set; }
+
+        // Navigation property
+        public ICollection<Parking> Parking { get; set; }
     }
 }

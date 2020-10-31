@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Garage3.Models.ViewModels.MemberDetailsViewModel>
+
+@{
+    ViewData["Title"] = "MemberDetails";
+}
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Member)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Make)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Model)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RegNum)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Member.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Make)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Model)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegNum)
+                </td>
+
+            </tr>
+        }
+        <tr>
+            <td>
+                <br /><br />
+                <a class="viewBtn" asp-action="Index">Back to List</a>
+            </td>
+        </tr>
+    </tbody>
+</table>

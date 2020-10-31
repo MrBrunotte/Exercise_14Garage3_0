@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Garage3.Models.ViewModels.ParkingSpaceOverviewViewModel>
+
+@{
+    ViewData["Title"] = "ParkingSpaceOverView";
+}
+
+<h1>Parking Space Overview</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.ParkingSpaceNum)</th>
+            <th>@Html.DisplayNameFor(model => model.Available)</th>
+            <th>@Html.DisplayNameFor(model => model.RegNum)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.ParkingSpaceNum)</td>
+            <td>@Html.DisplayFor(modelItem => item.Available)</td>
+            <td>@Html.DisplayFor(modelItem => item.RegNum)</td>
+        </tr>
+        }
+    </tbody>
+</table>
