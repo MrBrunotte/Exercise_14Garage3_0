@@ -91,6 +91,15 @@ a:hover,
 .navIcon {
     height: 25px;
 }
+.centerAlign {
+    text-align: center;
+}
+.layoutIcon {
+    margin: 0 auto;
+}
+.myMargin {
+    padding: 25px 0;
+}
 /* Sticky footer styles
 -------------------------------------------------- */
 @media (min-width: 768px) {

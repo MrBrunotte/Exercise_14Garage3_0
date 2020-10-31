@@ -1,0 +1,31 @@
+﻿@model Garage3.Models.ViewModels.VehicleTypeViewModel
+@inject Garage3.Services.ISelectService service
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Members</h1>
+
+<form asp-action="Filter">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" name="SearchString" placeholder="Search Registration Number..." />
+        <div class="input-group-append ml-1">
+            <select asp-for="VehicleTypeID" asp-items="@await service.GetTypeAsync()" class="form-control ml-1">
+                <option selected="selected" value="">Choose Vehicle Type...</option>
+            </select>
+        </div>
+        <div class="input-group-append ml-1">
+            <button type="submit" class="viewBtn"><i class="fa fa-search">&emsp;Search</i></button>
+        </div>
+    </div>
+</form>
+<!--<partial name="ParkedVehicleListPartial" model="@Model.VehicleList" />-->
+
+<!--TODO
+    Change to correct model line 1
+    Add service
+    Change to correct search filter
+    Change all form attributes so they match the member search
+    Change to correct partial view and correct model
+    -->

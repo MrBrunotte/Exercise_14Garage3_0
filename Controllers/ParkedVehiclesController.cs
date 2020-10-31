@@ -25,7 +25,7 @@ namespace Garage3.Controllers
         }
 
         // GET: ParkedVehicles
-        // Added by Stefan search functionality
+        // STEFAN start
         public async Task<IActionResult> Index()
         {
             var vehicles = await _context.ParkedVehicle.Include(p => p.VehicleType).ToListAsync();
@@ -67,6 +67,9 @@ namespace Garage3.Controllers
 
             return View(nameof(Index), model);
         }
+
+        // STEFAN END
+        //----------------------------------------//
 
         // Torbjörn
 
