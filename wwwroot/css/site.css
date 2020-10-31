@@ -34,6 +34,10 @@ a.navbar-brand {
     word-break: break-all;
 }
 
+.container {
+    max-width: 70%;
+}
+
 /* Provide sufficient contrast against white background */
 a {
     color: #fd4209;
