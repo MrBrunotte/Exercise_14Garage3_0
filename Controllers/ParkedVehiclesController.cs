@@ -241,7 +241,7 @@ namespace Garage3.Controllers
             //foreach (var vehicle in parkedVehicle)
             //{
             //    model.Add(new MemberDetailsViewModel
-            //    { 
+            //    {
             //        Member = vehicle.Member,
             //        VehicleType = vehicle.VehicleType,
             //        RegNum = vehicle.RegNum,
@@ -303,7 +303,7 @@ namespace Garage3.Controllers
                     return Json($"{viewModel.Email} is in use");
                 }
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(MemberOverView));
             }
 
             return View(viewModel);
@@ -330,13 +330,13 @@ namespace Garage3.Controllers
                     .Where(v => v.ID == viewModel.VehicleTypeID)
                     .Select(v => v.FillsNumberOfSpaces)
                     .FirstOrDefault();
-                
+
                 if (!CheckParkingSpaces(size))
                 {
                     ModelState.AddModelError("RegNum", $"Not enough free parking spaces. {viewModel.RegNum} requires {size} parking spaces.");
                     return View();
                 }
-                
+
                 // Park vehicle
                 var vehicles = new ParkedVehicle
                 {
@@ -381,7 +381,7 @@ namespace Garage3.Controllers
                         vehicles.ArrivalTime = DateTime.Now;
 
                         _context.Add(vehicles);
-                        _context.Parking.AddRange(allocateSpaces);  
+                        _context.Parking.AddRange(allocateSpaces);
                         await _context.SaveChangesAsync();
                     }
                     else
@@ -689,7 +689,7 @@ namespace Garage3.Controllers
 
 
         public async Task<IActionResult> ParkingSpaceOverview()
-        {          
+        {
             var model = await _context.ParkingSpace
                 .Include(s => s.Parking)
                 .ThenInclude(s => s.ParkedVehicle)
@@ -702,7 +702,7 @@ namespace Garage3.Controllers
                     ParkedVehicleId = p.Parking.Select(p => p.ParkedVehicle.ID).FirstOrDefault()
                 })
                 .ToListAsync();
-          
+
             return View(model);
         }
 
@@ -717,7 +717,7 @@ namespace Garage3.Controllers
                 .ToList();
 
             var adjacentFound = false;
-            // List contains free parking spaces sorted on ParkingSpace number.            
+            // List contains free parking spaces sorted on ParkingSpace number.
             for (var i = 0; i < availableSpaces.Count - numberOfSpaces + 1; i++)
             {
                 if (availableSpaces[i + numberOfSpaces - 1].ParkingSpaceNum == availableSpaces[i].ParkingSpaceNum + numberOfSpaces - 1)
