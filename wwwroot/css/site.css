@@ -66,8 +66,16 @@ a:hover,
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+.border {
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 0 1rem 1.2rem;
+    width: 32%;
+    margin-bottom: 1rem;
+}
 .headerText {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
+    padding-top: 1rem;
 }
 .parkVehicle {
     padding: 7px 14px;
