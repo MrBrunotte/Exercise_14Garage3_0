@@ -26,7 +26,7 @@ namespace Garage3.Controllers
         }
 
         // GET: ParkedVehicles
-        // Added by Stefan search functionality
+        // STEFAN start
         public async Task<IActionResult> Index()
         {
             var vehicles = await _context.ParkedVehicle.Include(p => p.VehicleType).ToListAsync();
@@ -38,7 +38,6 @@ namespace Garage3.Controllers
             };
             return View(model);
         }
-
         private async Task<IEnumerable<SelectListItem>> GetTypeAsync()
         {
             return await _context.VehicleTypes
@@ -49,7 +48,7 @@ namespace Garage3.Controllers
                          })
                          .ToListAsync();
         }
-
+        // Filter for vehicle search and type
         public async Task<IActionResult> Filter(VehicleTypeViewModel viewModel)
         {
             var vehicles = string.IsNullOrWhiteSpace(viewModel.SearchString) ?
@@ -68,6 +67,35 @@ namespace Garage3.Controllers
 
             return View(nameof(Index), model);
         }
+
+        // Member search
+        public async Task<IActionResult> Index2()
+        {
+            var members = await _context.Members.ToListAsync();
+
+            var memberModel = new MemberViewModel
+            {
+                MemberList = members
+            };
+
+            return View(memberModel);
+        }
+        public async Task<IActionResult> FilterMembers(string searchString)
+        {
+            var member = string.IsNullOrWhiteSpace(searchString) ?
+                _context.Members :
+                _context.Members.Where(m => m.FirstName.Contains(searchString) || m.LastName.Contains(searchString));
+
+            var model = new MemberViewModel
+            {
+                MemberList = await member.ToListAsync(),
+            };
+
+            return View(nameof(Index2), model);
+        }
+
+        // STEFAN END
+        //----------------------------------------//
 
         // Torbjörn
 
@@ -595,7 +623,7 @@ namespace Garage3.Controllers
                 .ThenInclude(p => p.ParkingSpace)
                 .FirstOrDefaultAsync(m => m.ID == id);
 
-            // To be used in Receipt         
+            // To be used in Receipt
             TempData["regnum"] = parkedVehicle.RegNum;
             TempData["arrival"] = parkedVehicle.ArrivalTime;
             TempData["checkout"] = DateTime.Now;

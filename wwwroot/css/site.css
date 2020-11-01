@@ -9,16 +9,38 @@ input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
-
+ h1 {
+     margin-bottom: 2.5rem;
+ }
+ table {
+     margin-top: 2rem;
+ }
 /* Firefox */
 input[type=number] {
     -moz-appearance: textfield;
+}
+
+.navbar-expand-sm .navbar-nav .nav-link {
+    padding-right: .5rem;
+    padding-left: .5rem;
+    letter-spacing: .5px;
+}
+
+
+.nav-link::after {
+    content: "||";
+    padding: 15px;
+
 }
 
 a.navbar-brand {
     white-space: normal;
     text-align: center;
     word-break: break-all;
+}
+
+.container {
+    max-width: 70%;
 }
 
 /* Provide sufficient contrast against white background */
@@ -51,7 +73,7 @@ a:hover,
     border-radius: 5px;
     background-color: #02020282;
     color: white;
-    font-size: 2rem;
+    font-size: 1.25rem;
 }
 .viewBtn {
     padding: 7px 14px;
@@ -85,11 +107,21 @@ a:hover,
     letter-spacing: 2px;
 }
 .iconSize {
-    height: 100px;
+    height: 70px;
     margin: 30px 0;
 }
 .navIcon {
-    height: 25px;
+    height: 16px;
+    padding-left: 8px;
+}
+.centerAlign {
+    text-align: center;
+}
+.layoutIcon {
+    margin: 0 auto;
+}
+.myMargin {
+    padding: 25px 0;
 }
 /* Sticky footer styles
 -------------------------------------------------- */

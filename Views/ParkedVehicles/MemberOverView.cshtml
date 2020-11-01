@@ -7,7 +7,8 @@
 <h1>Members</h1>
 
 <p>
-    <a asp-action="RegisterMember">Register New Member</a>
+    <a class="viewBtn" asp-action="RegisterMember">Register New Member</a>
+    <a class="viewBtn" asp-action="Index2">Search a Member</a>
 </p>
 <table class="table">
     <thead>
@@ -30,7 +31,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.NumOfVehicles)
             </th>
-            <th></th>
+            <th>
+                Actions
+            </th>
         </tr>
     </thead>
     <tbody>
