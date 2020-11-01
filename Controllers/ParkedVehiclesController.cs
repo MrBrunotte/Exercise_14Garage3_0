@@ -180,6 +180,7 @@ namespace Garage3.Controllers
         public async Task<IActionResult> MemberOverView()
         {
             var members = await _context.Members
+                .Include(m => m.ParkedVehicles)
                .ToListAsync();
 
             var model = new List<MemberOverViewViewModel>();
@@ -192,7 +193,7 @@ namespace Garage3.Controllers
                     LastName = member.LastName,
                     Email = member.Email,
                     PhoneNum = member.PhoneNum,
-                    NumOfVehicles = 1,
+                    NumOfVehicles = member.ParkedVehicles.Count,
                     ID = member.Id
                 });
             }
