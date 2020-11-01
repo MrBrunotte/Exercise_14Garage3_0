@@ -23,9 +23,6 @@
                 @Html.DisplayNameFor(model => model.ArrivalTime)
             </th>
             <th>
-                # of Parked Vehicles
-            </th>
-            <th>
                 Actions
             </th>
         </tr>
@@ -51,9 +48,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ArrivalTime)
-            </td>
-            <td>
-                # of Parked Vehicles
             </td>
             <td>
                 <a class="viewBtn" asp-action="Checkout" asp-route-id="@item.ID">Check Out</a> |

@@ -154,7 +154,17 @@ namespace Garage3.Data
                  new ParkingSpace { ID = 7, Available = true, ParkingSpaceNum = 7 },
                  new ParkingSpace { ID = 8, Available = true, ParkingSpaceNum = 8 },
                  new ParkingSpace { ID = 9, Available = true, ParkingSpaceNum = 9 },
-                 new ParkingSpace { ID = 10, Available = true, ParkingSpaceNum = 10 }
+                 new ParkingSpace { ID = 10, Available = true, ParkingSpaceNum = 10 },
+                 new ParkingSpace { ID = 11, Available = true, ParkingSpaceNum = 11 },
+                 new ParkingSpace { ID = 12, Available = true, ParkingSpaceNum = 12 },
+                 new ParkingSpace { ID = 13, Available = true, ParkingSpaceNum = 13 },
+                 new ParkingSpace { ID = 14, Available = true, ParkingSpaceNum = 14 },
+                 new ParkingSpace { ID = 15, Available = true, ParkingSpaceNum = 15 },
+                 new ParkingSpace { ID = 16, Available = true, ParkingSpaceNum = 16 },
+                 new ParkingSpace { ID = 17, Available = true, ParkingSpaceNum = 17 },
+                 new ParkingSpace { ID = 18, Available = true, ParkingSpaceNum = 18 },
+                 new ParkingSpace { ID = 19, Available = true, ParkingSpaceNum = 19 },
+                 new ParkingSpace { ID = 20, Available = true, ParkingSpaceNum = 20 }
 
               // AddParkingSpaces()
 

@@ -94,6 +94,7 @@ namespace Garage3.Controllers
             return View(nameof(Index2), model);
         }
 
+
         // STEFAN END
         //----------------------------------------//
 
