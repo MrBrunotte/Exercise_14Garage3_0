@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Garage3.Models
 {
@@ -21,6 +22,8 @@ namespace Garage3.Models
         public string PhoneNum { get; set; }
         [Display(Name = "Full name")]
         public string FullName => $"{FirstName} {LastName}";
+
+        public ICollection<ParkedVehicle> ParkedVehicles { get; set; }
 
         //[Required]
         //[RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$")]
