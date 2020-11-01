@@ -687,8 +687,6 @@ namespace Garage3.Controllers
         }
 
 
-
-
         public async Task<IActionResult> ParkingSpaceOverview()
         {
             var model = await _context.ParkingSpace
