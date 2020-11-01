@@ -15,6 +15,7 @@ namespace Garage3.Models.ViewModels
         [Display(Name = "Registration number")]
         public string RegNum { get; set; }
         public int? ParkedVehicleId { get; set; }
+
     }
 }
 
