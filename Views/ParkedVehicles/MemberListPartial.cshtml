@@ -7,13 +7,17 @@
                 @Html.DisplayNameFor(model => model.FullName)
             </th>
             <th>
-               # of Parked Vehicles
+                # of Parked Vehicles
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Email)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PhoneNum)
+            </th>
+            <th>
+                <!--@Html.DisplayNameFor(model => model.PhoneNum)-->
+                Member
             </th>
         </tr>
     </thead>
@@ -25,13 +29,16 @@
                 @Html.DisplayFor(modelItem => item.FullName)
             </td>
             <td>
-                # of Parked Vehicles
+                TODO # of Parked Vehicles
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PhoneNum)
+            </td>
+            <td>
+                <a class="viewBtn" asp-action="Details" asp-route-id="@item.Id">See Member Info</a>
             </td>
         </tr>
         }
