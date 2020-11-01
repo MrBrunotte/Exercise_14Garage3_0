@@ -9,7 +9,12 @@ input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
-
+ h1 {
+     margin-bottom: 2.5rem;
+ }
+ table {
+     margin-top: 2rem;
+ }
 /* Firefox */
 input[type=number] {
     -moz-appearance: textfield;
