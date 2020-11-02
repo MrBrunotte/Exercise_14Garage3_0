@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Garage3.Migrations
 {
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -124,15 +124,25 @@ namespace Garage3.Migrations
                 values: new object[,]
                 {
                     { 1, false, 1 },
+                    { 20, true, 20 },
+                    { 19, true, 19 },
+                    { 18, true, 18 },
+                    { 17, true, 17 },
+                    { 16, true, 16 },
+                    { 15, true, 15 },
+                    { 13, true, 13 },
+                    { 14, true, 14 },
+                    { 11, true, 11 },
                     { 10, true, 10 },
-                    { 8, true, 8 },
                     { 9, true, 9 },
+                    { 8, true, 8 },
+                    { 7, true, 7 },
                     { 6, true, 6 },
                     { 5, true, 5 },
                     { 4, true, 4 },
                     { 3, true, 3 },
                     { 2, true, 2 },
-                    { 7, true, 7 }
+                    { 12, true, 12 }
                 });
 
             migrationBuilder.InsertData(

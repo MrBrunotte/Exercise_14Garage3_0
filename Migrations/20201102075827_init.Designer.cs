@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Garage3.Migrations
 {
     [DbContext(typeof(Garage3Context))]
-    [Migration("20201029135902_Init")]
-    partial class Init
+    [Migration("20201102075827_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -128,6 +128,66 @@ namespace Garage3.Migrations
                             ID = 10,
                             Available = true,
                             ParkingSpaceNum = 10
+                        },
+                        new
+                        {
+                            ID = 11,
+                            Available = true,
+                            ParkingSpaceNum = 11
+                        },
+                        new
+                        {
+                            ID = 12,
+                            Available = true,
+                            ParkingSpaceNum = 12
+                        },
+                        new
+                        {
+                            ID = 13,
+                            Available = true,
+                            ParkingSpaceNum = 13
+                        },
+                        new
+                        {
+                            ID = 14,
+                            Available = true,
+                            ParkingSpaceNum = 14
+                        },
+                        new
+                        {
+                            ID = 15,
+                            Available = true,
+                            ParkingSpaceNum = 15
+                        },
+                        new
+                        {
+                            ID = 16,
+                            Available = true,
+                            ParkingSpaceNum = 16
+                        },
+                        new
+                        {
+                            ID = 17,
+                            Available = true,
+                            ParkingSpaceNum = 17
+                        },
+                        new
+                        {
+                            ID = 18,
+                            Available = true,
+                            ParkingSpaceNum = 18
+                        },
+                        new
+                        {
+                            ID = 19,
+                            Available = true,
+                            ParkingSpaceNum = 19
+                        },
+                        new
+                        {
+                            ID = 20,
+                            Available = true,
+                            ParkingSpaceNum = 20
                         });
                 });
 
@@ -324,7 +384,7 @@ namespace Garage3.Migrations
                         .IsRequired();
 
                     b.HasOne("Garage3.Models.Entities.ParkingSpace", "ParkingSpace")
-                        .WithMany()
+                        .WithMany("Parking")
                         .HasForeignKey("ParkingSpaceID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -333,7 +393,7 @@ namespace Garage3.Migrations
             modelBuilder.Entity("Garage3.Models.ParkedVehicle", b =>
                 {
                     b.HasOne("Garage3.Models.Member", "Member")
-                        .WithMany()
+                        .WithMany("ParkedVehicles")
                         .HasForeignKey("MemberID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
