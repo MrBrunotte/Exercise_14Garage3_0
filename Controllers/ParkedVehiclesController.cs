@@ -130,8 +130,8 @@ namespace Garage3.Controllers
                 Model = parkedVehicle.Model,
                 ArrivalTime = parkedVehicle.ArrivalTime,
                 Period = DateTime.Now - parkedVehicle.ArrivalTime,
-                ParkingSpaces = parkedVehicle.Parking.Select(s => s.ParkingSpace).ToList()
-
+                ParkingSpaces = parkedVehicle.Parking.Select(s => s.ParkingSpace).ToList(),
+                ID = parkedVehicle.ID
             };
 
             return View(detailsView);
