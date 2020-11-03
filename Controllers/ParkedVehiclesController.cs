@@ -53,10 +53,9 @@ namespace Garage3.Controllers
         {
             // searchfield
             var vehicles = string.IsNullOrWhiteSpace(viewModel.SearchString) ?
-                //ViewData["message"] = "Sorry, no data!";
                 _context.ParkedVehicle.Include(p => p.VehicleType) :
                 _context.ParkedVehicle.Include(p => p.VehicleType).Where(m => m.RegNum.Contains(viewModel.SearchString));
-            //Dropdown 
+            //Dropdown
             vehicles = viewModel.VehicleTypeID == null ?
                 vehicles :
                 vehicles.Where(m => m.VehicleTypeID == viewModel.VehicleTypeID);
@@ -66,7 +65,7 @@ namespace Garage3.Controllers
                 VehicleList = await vehicles.ToListAsync(),
                 VehicleTypes = await GetTypeAsync()
             };
-
+                //ViewData["message"] = "Sorry, no data!";
             return View(nameof(Index), model);
         }
 
