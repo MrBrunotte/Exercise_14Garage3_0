@@ -51,10 +51,12 @@ namespace Garage3.Controllers
         // Filter for vehicle search and type
         public async Task<IActionResult> Filter(VehicleTypeViewModel viewModel)
         {
+            // searchfield
             var vehicles = string.IsNullOrWhiteSpace(viewModel.SearchString) ?
+                //ViewData["message"] = "Sorry, no data!";
                 _context.ParkedVehicle.Include(p => p.VehicleType) :
                 _context.ParkedVehicle.Include(p => p.VehicleType).Where(m => m.RegNum.Contains(viewModel.SearchString));
-
+            //Dropdown 
             vehicles = viewModel.VehicleTypeID == null ?
                 vehicles :
                 vehicles.Where(m => m.VehicleTypeID == viewModel.VehicleTypeID);
@@ -211,17 +213,6 @@ namespace Garage3.Controllers
                 .Include(p => p.VehicleType)
                 .Where(m => m.MemberID == id)
                 .ToListAsync();
-            //var model = new List<MemberDetailsViewModel>();
-            //var member = await _context.Members
-            //   .Where(m => m.Id == id)
-            //   .ToListAsync();
-
-            //var memberDetails = new MemberDetailsViewModel
-            //{
-
-            //};
-
-
 
             List<MemberDetailsViewModel> newList = new List<MemberDetailsViewModel>();
             foreach (var item in parkedVehicle)
@@ -237,24 +228,6 @@ namespace Garage3.Controllers
             }
 
             return View(newList);
-
-
-
-            //foreach (var vehicle in parkedVehicle)
-            //{
-            //    model.Add(new MemberDetailsViewModel
-            //    {
-            //        Member = vehicle.Member,
-            //        VehicleType = vehicle.VehicleType,
-            //        RegNum = vehicle.RegNum,
-            //        Make = vehicle.Make,
-            //        Model = vehicle.Model
-
-            //    });
-
-            //}
-            //return View(model);
-
         }
 
         //Soile
@@ -648,7 +621,7 @@ namespace Garage3.Controllers
             var checkout = (DateTime)TempData["checkout"];
             var parkingSpaces = (ICollection<int>)TempData["parkingspace"];
 
-            // TODO: This is to handle if vehicles exist without being parked. During deveopment
+            // TODO: This is to handle if vehicles exist without being parked. During development
             if (parkingSpaces == null)
             {
                 parkingSpaces = new List<int>() { 0 };
